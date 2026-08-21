@@ -46,14 +46,14 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
       className={`glass-panel rounded-3xl p-4 shadow-float sm:p-6 ${compact ? "" : "w-full"}`}
       aria-label="Cab booking form"
     >
-      <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-secondary p-1.5 sm:flex sm:flex-nowrap">
+      <div className="no-scrollbar -mx-1 flex snap-x snap-mandatory items-center gap-1.5 overflow-x-auto rounded-full bg-secondary p-1.5">
         {tabs.map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTripType(t)}
             aria-pressed={tripType === t}
-            className={`flex-1 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-semibold transition-colors sm:text-sm ${
+            className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition-colors sm:flex-1 sm:text-sm ${
               tripType === t
                 ? "bg-primary text-primary-foreground shadow-card"
                 : "text-muted-foreground hover:text-primary"
@@ -63,6 +63,7 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           </button>
         ))}
       </div>
+
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <div>
