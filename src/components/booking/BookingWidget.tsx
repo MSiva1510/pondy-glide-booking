@@ -46,22 +46,32 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
       className={`glass-panel rounded-3xl p-4 shadow-float sm:p-6 ${compact ? "" : "w-full"}`}
       aria-label="Cab booking form"
     >
-      <div className="no-scrollbar -mx-1 flex snap-x snap-mandatory items-center gap-1.5 overflow-x-auto rounded-full bg-secondary p-1.5">
-        {tabs.map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTripType(t)}
-            aria-pressed={tripType === t}
-            className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition-colors sm:flex-1 sm:text-sm ${
-              tripType === t
-                ? "bg-primary text-primary-foreground shadow-card"
-                : "text-muted-foreground hover:text-primary"
-            }`}
-          >
-            {TRIP_TYPE_LABELS[t]}
-          </button>
-        ))}
+      <div className="relative">
+        <div
+          className="no-scrollbar -mx-1 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto rounded-2xl bg-secondary p-2 sm:rounded-full"
+          role="tablist"
+          aria-label="Trip type"
+        >
+          {tabs.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTripType(t)}
+              aria-pressed={tripType === t}
+              role="tab"
+              aria-selected={tripType === t}
+              className={`w-[calc(100%-0.5rem)] shrink-0 snap-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors sm:w-auto sm:flex-1 ${
+                tripType === t
+                  ? "bg-primary text-primary-foreground shadow-card"
+                  : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              {TRIP_TYPE_LABELS[t]}
+            </button>
+          ))}
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-6 rounded-l-2xl bg-gradient-to-r from-secondary to-transparent sm:hidden" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-6 rounded-r-2xl bg-gradient-to-l from-secondary to-transparent sm:hidden" />
       </div>
 
 
