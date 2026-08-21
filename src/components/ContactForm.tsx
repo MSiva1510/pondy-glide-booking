@@ -10,16 +10,18 @@ import { isValidIndianMobile } from "@/lib/booking-validation";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { callHref } from "@/config/brand";
 
+type ContactErrors = Partial<Record<"name" | "phone" | "email" | "message", string>>;
+
 export function ContactForm() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", service: "", message: "" });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<ContactErrors>({});
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const next: Record<string, string> = {};
+    const next: ContactErrors = {};
     if (!form.name.trim()) next.name = "Please enter your name.";
     if (!isValidIndianMobile(form.phone)) next.phone = "Enter a valid 10-digit mobile number.";
     if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) next.email = "Enter a valid email address.";

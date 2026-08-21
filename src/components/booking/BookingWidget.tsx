@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { vehicles } from "@/data/vehicles";
 import { TRIP_TYPE_LABELS, type TripType } from "@/types";
-import { todayISO, validateTrip } from "@/lib/booking-validation";
+import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
 
 const tabs: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 
@@ -24,7 +24,7 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
     name: "",
     phone: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<FieldErrors>({});
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));

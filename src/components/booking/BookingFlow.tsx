@@ -19,29 +19,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { getAvailableVehicles } from "@/services/fleetService";
 import { submitBooking } from "@/services/bookingService";
 import { estimateFare } from "@/services/pricingService";
-import { todayISO, validateTrip } from "@/lib/booking-validation";
+import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { brand, callHref } from "@/config/brand";
 import { TRIP_TYPE_LABELS, type Booking, type TripType } from "@/types";
 
 export interface BookingFlowInitial {
-  pickup?: string;
-  drop?: string;
-  date?: string;
-  time?: string;
-  passengers?: string;
-  vehicle?: string;
-  name?: string;
-  phone?: string;
-  tripType?: TripType;
-  service?: string;
+  pickup?: string | undefined;
+  drop?: string | undefined;
+  date?: string | undefined;
+  time?: string | undefined;
+  passengers?: string | undefined;
+  vehicle?: string | undefined;
+  name?: string | undefined;
+  phone?: string | undefined;
+  tripType?: TripType | undefined;
+  service?: string | undefined;
 }
 
 const stepLabels = ["Trip Details", "Vehicle", "Your Details", "Summary", "Confirmation"];
 
 export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) {
   const [step, setStep] = useState(1);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -372,7 +372,7 @@ function Field({
 }: {
   id: string;
   label: string;
-  error?: string;
+  error?: string | undefined;
   children: React.ReactNode;
 }) {
   return (
@@ -391,7 +391,7 @@ function StepNav({
 }: {
   onBack?: () => void;
   onNext: () => void;
-  nextLabel?: string;
+  nextLabel?: string | undefined;
 }) {
   return (
     <div className="mt-6 flex flex-col gap-2 sm:flex-row">

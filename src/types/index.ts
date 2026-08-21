@@ -34,17 +34,17 @@ export type BookingStatus =
 export interface BookingRequest {
   customerName: string;
   phone: string;
-  email?: string;
+  email?: string | undefined;
   pickup: string;
   drop: string;
   date: string;
   time: string;
-  returnDate?: string;
+  returnDate?: string | undefined;
   tripType: TripType;
   vehicleType: string;
   passengers: number;
-  specialRequest?: string;
-  serviceSlug?: string;
+  specialRequest?: string | undefined;
+  serviceSlug?: string | undefined;
   source: "PUBLIC_WEBSITE";
 }
 
@@ -52,7 +52,7 @@ export interface Booking extends BookingRequest {
   id: string;
   status: BookingStatus;
   createdAt: string;
-  estimatedFare?: number | null;
+  estimatedFare?: number | null | undefined;
 }
 
 export interface FareEstimate {
