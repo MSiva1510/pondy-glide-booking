@@ -46,7 +46,7 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
       className={`glass-panel rounded-3xl p-4 shadow-float sm:p-6 ${compact ? "" : "w-full"}`}
       aria-label="Cab booking form"
     >
-      <div className="flex flex-wrap gap-1.5 rounded-2xl bg-secondary p-1.5">
+      <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-secondary p-1.5 sm:flex sm:flex-nowrap">
         {tabs.map((t) => (
           <button
             key={t}
