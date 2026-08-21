@@ -42,7 +42,7 @@ export function HeroSlider() {
     return () => clearInterval(id);
   }, []);
 
-  const slide = slides[index];
+  const slide = slides[index] ?? slides[0]!;
 
   return (
     <section className="relative overflow-hidden bg-primary" aria-label="Pondicherry cab booking">

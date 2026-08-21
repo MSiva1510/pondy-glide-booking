@@ -25,16 +25,16 @@ export interface BookingSearch {
 
 export const Route = createFileRoute("/booking")({
   validateSearch: (search: Record<string, unknown>): BookingSearch => ({
-    pickup: str(search.pickup),
-    drop: str(search.drop),
-    date: str(search.date),
-    time: str(search.time),
-    passengers: str(search.passengers),
-    vehicle: str(search.vehicle),
-    name: str(search.name),
-    phone: str(search.phone),
-    service: str(search.service),
-    tripType: tripTypes.includes(search.tripType as TripType) ? (search.tripType as TripType) : undefined,
+    pickup: str(search["pickup"]),
+    drop: str(search["drop"]),
+    date: str(search["date"]),
+    time: str(search["time"]),
+    passengers: str(search["passengers"]),
+    vehicle: str(search["vehicle"]),
+    name: str(search["name"]),
+    phone: str(search["phone"]),
+    service: str(search["service"]),
+    tripType: tripTypes.includes(search["tripType"] as TripType) ? (search["tripType"] as TripType) : undefined,
   }),
   head: () => ({
     meta: [
