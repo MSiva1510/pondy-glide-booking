@@ -10,8 +10,21 @@ const description =
 const tripTypes: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 const str = (v: unknown) => (typeof v === "string" && v.trim() !== "" ? v : undefined);
 
+export interface BookingSearch {
+  pickup?: string | undefined;
+  drop?: string | undefined;
+  date?: string | undefined;
+  time?: string | undefined;
+  passengers?: string | undefined;
+  vehicle?: string | undefined;
+  name?: string | undefined;
+  phone?: string | undefined;
+  service?: string | undefined;
+  tripType?: TripType | undefined;
+}
+
 export const Route = createFileRoute("/booking")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): BookingSearch => ({
     pickup: str(search.pickup),
     drop: str(search.drop),
     date: str(search.date),
