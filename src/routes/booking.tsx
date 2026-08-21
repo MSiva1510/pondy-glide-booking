@@ -34,7 +34,9 @@ export const Route = createFileRoute("/booking")({
     name: str(search["name"]),
     phone: str(search["phone"]),
     service: str(search["service"]),
-    tripType: tripTypes.includes(search["tripType"] as TripType) ? (search["tripType"] as TripType) : undefined,
+    tripType: tripTypes.includes(search["tripType"] as TripType)
+      ? (search["tripType"] as TripType)
+      : undefined,
   }),
   head: () => ({
     meta: [

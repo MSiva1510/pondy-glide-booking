@@ -26,30 +26,31 @@ function PrivacyPage() {
       <Section>
         <div className="max-w-3xl space-y-6 text-sm leading-relaxed text-muted-foreground">
           <p>
-            This policy explains what information {brand.brandName} collects through this website and how it is
-            used. Please review and adjust this text with your own legal wording before publishing.
+            This policy explains what information {brand.brandName} collects through this website
+            and how it is used. Please review and adjust this text with your own legal wording
+            before publishing.
           </p>
           <div>
             <h2 className="text-lg font-semibold text-foreground">Information we collect</h2>
             <p className="mt-2">
-              When you submit a booking or enquiry we collect your name, mobile number, optional email address
-              and the trip details you provide (pickup, destination, date, time, passengers and any special
-              request).
+              When you submit a booking or enquiry we collect your name, mobile number, optional
+              email address and the trip details you provide (pickup, destination, date, time,
+              passengers and any special request).
             </p>
           </div>
           <div>
             <h2 className="text-lg font-semibold text-foreground">How we use it</h2>
             <p className="mt-2">
-              Your details are used to confirm availability, assign a vehicle and driver, share fare details and
-              contact you about your trip. Booking information is passed to our internal fleet management system
-              for operational handling.
+              Your details are used to confirm availability, assign a vehicle and driver, share fare
+              details and contact you about your trip. Booking information is passed to our internal
+              fleet management system for operational handling.
             </p>
           </div>
           <div>
             <h2 className="text-lg font-semibold text-foreground">Sharing</h2>
             <p className="mt-2">
-              We share trip information with the driver assigned to your booking. We do not sell your personal
-              information.
+              We share trip information with the driver assigned to your booking. We do not sell
+              your personal information.
             </p>
           </div>
           <div>

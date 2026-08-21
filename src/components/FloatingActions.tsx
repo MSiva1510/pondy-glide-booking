@@ -25,7 +25,11 @@ export function MobileActionBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl sm:hidden">
       <div className="grid grid-cols-3">
-        <a href={callHref} className="flex flex-col items-center gap-1 py-3 text-xs font-medium text-foreground" aria-label={`Call ${brand.phoneDisplay}`}>
+        <a
+          href={callHref}
+          className="flex flex-col items-center gap-1 py-3 text-xs font-medium text-foreground"
+          aria-label={`Call ${brand.phoneDisplay}`}
+        >
           <Phone className="size-5 text-primary" aria-hidden="true" /> Call
         </a>
         <a
@@ -36,7 +40,10 @@ export function MobileActionBar() {
         >
           <MessageCircle className="size-5 text-[#25D366]" aria-hidden="true" /> WhatsApp
         </a>
-        <Link to="/booking" className="gradient-hero flex flex-col items-center gap-1 py-3 text-xs font-semibold text-ocean-foreground">
+        <Link
+          to="/booking"
+          className="gradient-hero flex flex-col items-center gap-1 py-3 text-xs font-semibold text-ocean-foreground"
+        >
           <CalendarCheck className="size-5" aria-hidden="true" /> Book Now
         </Link>
       </div>

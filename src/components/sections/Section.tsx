@@ -34,7 +34,10 @@ export function Section({
   tone?: "default" | "soft";
 }) {
   return (
-    <section id={id} className={`${tone === "soft" ? "bg-surface" : "bg-background"} py-16 sm:py-20 ${className}`}>
+    <section
+      id={id}
+      className={`${tone === "soft" ? "bg-surface" : "bg-background"} py-16 sm:py-20 ${className}`}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">{children}</div>
     </section>
   );

@@ -161,8 +161,12 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               >
                 {n}
               </span>
-              <span className={state === "todo" ? "text-muted-foreground" : "text-foreground"}>{label}</span>
-              {n < stepLabels.length ? <span className="hidden h-px w-6 bg-border sm:block" /> : null}
+              <span className={state === "todo" ? "text-muted-foreground" : "text-foreground"}>
+                {label}
+              </span>
+              {n < stepLabels.length ? (
+                <span className="hidden h-px w-6 bg-border sm:block" />
+              ) : null}
             </li>
           );
         })}
@@ -181,21 +185,48 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
                 className="mt-1 h-11 w-full rounded-xl border border-input bg-background px-3 text-sm"
               >
                 {(Object.keys(TRIP_TYPE_LABELS) as TripType[]).map((t) => (
-                  <option key={t} value={t}>{TRIP_TYPE_LABELS[t]}</option>
+                  <option key={t} value={t}>
+                    {TRIP_TYPE_LABELS[t]}
+                  </option>
                 ))}
               </select>
             </div>
             <Field id="bf-pickup" label="Pickup Location" error={errors.pickup}>
-              <Input id="bf-pickup" value={form.pickup} onChange={(e) => set("pickup", e.target.value)} placeholder="Pickup address or area" />
+              <Input
+                id="bf-pickup"
+                value={form.pickup}
+                onChange={(e) => set("pickup", e.target.value)}
+                placeholder="Pickup address or area"
+              />
             </Field>
-            <Field id="bf-drop" label={form.tripType === "LOCAL" ? "Drop / Area (optional)" : "Drop Location"} error={errors.drop}>
-              <Input id="bf-drop" value={form.drop} onChange={(e) => set("drop", e.target.value)} placeholder="Destination" />
+            <Field
+              id="bf-drop"
+              label={form.tripType === "LOCAL" ? "Drop / Area (optional)" : "Drop Location"}
+              error={errors.drop}
+            >
+              <Input
+                id="bf-drop"
+                value={form.drop}
+                onChange={(e) => set("drop", e.target.value)}
+                placeholder="Destination"
+              />
             </Field>
             <Field id="bf-date" label="Travel Date" error={errors.date}>
-              <Input id="bf-date" type="date" min={todayISO()} value={form.date} onChange={(e) => set("date", e.target.value)} />
+              <Input
+                id="bf-date"
+                type="date"
+                min={todayISO()}
+                value={form.date}
+                onChange={(e) => set("date", e.target.value)}
+              />
             </Field>
             <Field id="bf-time" label="Pickup Time" error={errors.time}>
-              <Input id="bf-time" type="time" value={form.time} onChange={(e) => set("time", e.target.value)} />
+              <Input
+                id="bf-time"
+                type="time"
+                value={form.time}
+                onChange={(e) => set("time", e.target.value)}
+              />
             </Field>
           </div>
           <StepNav onNext={goStep1Next} nextLabel="Choose Vehicle" />
@@ -213,7 +244,10 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Checking vehicles…
             </p>
           ) : availability.isError ? (
-            <ErrorNote message="Unable to load vehicles right now. Please try again or book directly through WhatsApp." trip={waTrip} />
+            <ErrorNote
+              message="Unable to load vehicles right now. Please try again or book directly through WhatsApp."
+              trip={waTrip}
+            />
           ) : (
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {availability.data?.map((v) => (
@@ -223,23 +257,42 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
                   onClick={() => set("vehicle", v.id)}
                   aria-pressed={form.vehicle === v.id}
                   className={`flex items-center gap-4 rounded-2xl border p-3 text-left transition-all ${
-                    form.vehicle === v.id ? "border-accent bg-accent/10 shadow-card" : "border-border hover:border-aqua"
+                    form.vehicle === v.id
+                      ? "border-accent bg-accent/10 shadow-card"
+                      : "border-border hover:border-aqua"
                   }`}
                 >
-                  <img src={v.image} alt={v.name} loading="lazy" width={120} height={80} className="h-16 w-24 rounded-xl object-cover" />
+                  <img
+                    src={v.image}
+                    alt={v.name}
+                    loading="lazy"
+                    width={120}
+                    height={80}
+                    className="h-16 w-24 rounded-xl object-cover"
+                  />
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold">{v.name}</span>
-                    <span className="block truncate text-xs text-muted-foreground">{v.category}</span>
+                    <span className="block truncate text-xs text-muted-foreground">
+                      {v.category}
+                    </span>
                     <span className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Users className="size-3.5" aria-hidden="true" />{v.passengers}</span>
-                      <span className="flex items-center gap-1"><Briefcase className="size-3.5" aria-hidden="true" />{v.luggage}</span>
+                      <span className="flex items-center gap-1">
+                        <Users className="size-3.5" aria-hidden="true" />
+                        {v.passengers}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Briefcase className="size-3.5" aria-hidden="true" />
+                        {v.luggage}
+                      </span>
                     </span>
                   </span>
                 </button>
               ))}
             </div>
           )}
-          {errors.vehicle ? <p className="mt-2 text-xs text-destructive">{errors.vehicle}</p> : null}
+          {errors.vehicle ? (
+            <p className="mt-2 text-xs text-destructive">{errors.vehicle}</p>
+          ) : null}
           <StepNav
             onBack={() => setStep(1)}
             onNext={() => {
@@ -259,20 +312,52 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
           <h2 className="text-xl font-bold">Your details</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <Field id="bf-name" label="Name" error={errors.name}>
-              <Input id="bf-name" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Your full name" />
+              <Input
+                id="bf-name"
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+                placeholder="Your full name"
+              />
             </Field>
             <Field id="bf-phone" label="Mobile Number" error={errors.phone}>
-              <Input id="bf-phone" type="tel" inputMode="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="10-digit mobile" />
+              <Input
+                id="bf-phone"
+                type="tel"
+                inputMode="tel"
+                value={form.phone}
+                onChange={(e) => set("phone", e.target.value)}
+                placeholder="10-digit mobile"
+              />
             </Field>
             <Field id="bf-email" label="Email (optional)">
-              <Input id="bf-email" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="you@example.com" />
+              <Input
+                id="bf-email"
+                type="email"
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+                placeholder="you@example.com"
+              />
             </Field>
             <Field id="bf-pax" label="Passengers">
-              <Input id="bf-pax" type="number" min={1} max={20} value={form.passengers} onChange={(e) => set("passengers", e.target.value)} />
+              <Input
+                id="bf-pax"
+                type="number"
+                min={1}
+                max={20}
+                value={form.passengers}
+                onChange={(e) => set("passengers", e.target.value)}
+              />
             </Field>
             <div className="sm:col-span-2">
               <Label htmlFor="bf-note">Special request (optional)</Label>
-              <Textarea id="bf-note" className="mt-1" rows={3} value={form.specialRequest} onChange={(e) => set("specialRequest", e.target.value)} placeholder="Child seat, extra luggage, multiple stops…" />
+              <Textarea
+                id="bf-note"
+                className="mt-1"
+                rows={3}
+                value={form.specialRequest}
+                onChange={(e) => set("specialRequest", e.target.value)}
+                placeholder="Child seat, extra luggage, multiple stops…"
+              />
             </div>
           </div>
           <StepNav onBack={() => setStep(2)} onNext={goStep3Next} nextLabel="Review Booking" />
@@ -294,7 +379,10 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               ["Name", form.name],
               ["Mobile", form.phone],
             ].map(([k, v]) => (
-              <div key={k} className="flex items-start justify-between gap-4 bg-card px-4 py-3 text-sm">
+              <div
+                key={k}
+                className="flex items-start justify-between gap-4 bg-card px-4 py-3 text-sm"
+              >
                 <dt className="text-muted-foreground">{k}</dt>
                 <dd className="text-right font-medium">{v}</dd>
               </div>
@@ -302,17 +390,28 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
           </dl>
           <div className="mt-4 rounded-2xl bg-secondary p-4">
             <p className="text-sm font-semibold">
-              {fare.estimatedFare ? `Estimated fare ₹${fare.estimatedFare}` : "Fare will be confirmed"}
+              {fare.estimatedFare
+                ? `Estimated fare ₹${fare.estimatedFare}`
+                : "Fare will be confirmed"}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">{fare.note}</p>
           </div>
           {submitError ? <ErrorNote message={submitError} trip={waTrip} /> : null}
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-            <Button variant="outline" className="rounded-xl" onClick={() => setStep(3)} disabled={submitting}>
+            <Button
+              variant="outline"
+              className="rounded-xl"
+              onClick={() => setStep(3)}
+              disabled={submitting}
+            >
               <ArrowLeft className="size-4" aria-hidden="true" /> Back
             </Button>
             <Button className="flex-1 rounded-xl" onClick={onConfirm} disabled={submitting}>
-              {submitting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <BadgeCheck className="size-4" aria-hidden="true" />}
+              {submitting ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <BadgeCheck className="size-4" aria-hidden="true" />
+              )}
               Get Final Fare Confirmation
             </Button>
           </div>
@@ -331,7 +430,10 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
           </p>
           <dl className="mx-auto mt-6 max-w-md divide-y divide-border overflow-hidden rounded-2xl border border-border text-left">
             {[
-              ["Your trip", `${booking.pickup} → ${booking.drop || TRIP_TYPE_LABELS[booking.tripType]}`],
+              [
+                "Your trip",
+                `${booking.pickup} → ${booking.drop || TRIP_TYPE_LABELS[booking.tripType]}`,
+              ],
               ["Date", booking.date],
               ["Time", booking.time],
               ["Vehicle", selectedVehicle?.name ?? booking.vehicleType],
@@ -407,7 +509,13 @@ function StepNav({
   );
 }
 
-function ErrorNote({ message, trip }: { message: string; trip: Parameters<typeof whatsAppHref>[0] }) {
+function ErrorNote({
+  message,
+  trip,
+}: {
+  message: string;
+  trip: Parameters<typeof whatsAppHref>[0];
+}) {
   return (
     <div className="mt-4 rounded-2xl border border-destructive/30 bg-destructive/5 p-4">
       <p className="text-sm text-destructive">{message}</p>

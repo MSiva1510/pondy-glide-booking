@@ -23,7 +23,8 @@ export function validateTrip(input: {
 }) {
   const errors: FieldErrors = {};
   if (!input.pickup.trim()) errors.pickup = "Please enter a pickup location.";
-  if (input.tripType !== "LOCAL" && !input.drop.trim()) errors.drop = "Please enter a drop location.";
+  if (input.tripType !== "LOCAL" && !input.drop.trim())
+    errors.drop = "Please enter a drop location.";
   if (!input.date) errors.date = "Please choose a travel date.";
   else if (input.date < todayISO()) errors.date = "Travel date cannot be in the past.";
   if (!input.time) errors.time = "Please choose a pickup time.";

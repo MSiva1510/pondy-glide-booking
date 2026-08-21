@@ -23,13 +23,7 @@ export interface Vehicle {
 }
 
 export type BookingStatus =
-  | "PENDING"
-  | "CONFIRMED"
-  | "ASSIGNED"
-  | "DRIVER_ON_WAY"
-  | "STARTED"
-  | "COMPLETED"
-  | "CANCELLED";
+  "PENDING" | "CONFIRMED" | "ASSIGNED" | "DRIVER_ON_WAY" | "STARTED" | "COMPLETED" | "CANCELLED";
 
 export interface BookingRequest {
   customerName: string;

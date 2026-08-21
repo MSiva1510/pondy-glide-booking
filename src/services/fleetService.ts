@@ -51,7 +51,9 @@ export async function getAvailableVehicles(params: {
     );
   await delay();
   // Mock: availability is confirmed by the operations team after the request.
-  return vehicles.filter((v) => v.active && (!params.passengers || v.passengers >= params.passengers));
+  return vehicles.filter(
+    (v) => v.active && (!params.passengers || v.passengers >= params.passengers),
+  );
 }
 
 export async function getPricing() {
@@ -73,13 +75,17 @@ export async function createBooking(payload: BookingRequest): Promise<Booking> {
   };
 }
 
-export async function getBookingStatus(bookingId: string): Promise<{ id: string; status: BookingStatus }> {
+export async function getBookingStatus(
+  bookingId: string,
+): Promise<{ id: string; status: BookingStatus }> {
   if (isFleetApiConnected) return request(`/bookings/${bookingId}/status`);
   await delay(300);
   return { id: bookingId, status: "PENDING" };
 }
 
-export async function cancelBooking(bookingId: string): Promise<{ id: string; status: BookingStatus }> {
+export async function cancelBooking(
+  bookingId: string,
+): Promise<{ id: string; status: BookingStatus }> {
   if (isFleetApiConnected) return request(`/bookings/${bookingId}/cancel`, { method: "POST" });
   await delay(400);
   return { id: bookingId, status: "CANCELLED" };

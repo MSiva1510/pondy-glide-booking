@@ -37,7 +37,9 @@ function PricingPage() {
             <PricingCard key={t.id} tier={t} />
           ))}
         </div>
-        <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-muted-foreground">{pricingDisclaimer}</p>
+        <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-muted-foreground">
+          {pricingDisclaimer}
+        </p>
       </Section>
       <PopularRoutesSection />
       <FinalCTA />
