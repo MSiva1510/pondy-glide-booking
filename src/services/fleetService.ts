@@ -11,7 +11,7 @@ import { vehicles } from "@/data/vehicles";
 import { pricingTiers } from "@/data/pricing";
 import type { Booking, BookingRequest, BookingStatus, Vehicle } from "@/types";
 
-const FLEET_API_URL = import.meta.env.VITE_FLEET_API_URL as string | undefined;
+const FLEET_API_URL = import.meta.env["VITE_FLEET_API_URL"] as string | undefined;
 
 export const isFleetApiConnected = Boolean(FLEET_API_URL);
 
@@ -46,7 +46,9 @@ export async function getAvailableVehicles(params: {
   passengers?: number;
 }): Promise<Vehicle[]> {
   if (isFleetApiConnected)
-    return request<Vehicle[]>(`/availability?${new URLSearchParams(params as Record<string, string>)}`);
+    return request<Vehicle[]>(
+      `/availability?${new URLSearchParams({ date: params.date, tripType: params.tripType, passengers: String(params.passengers ?? 1) })}`,
+    );
   await delay();
   // Mock: availability is confirmed by the operations team after the request.
   return vehicles.filter((v) => v.active && (!params.passengers || v.passengers >= params.passengers));
