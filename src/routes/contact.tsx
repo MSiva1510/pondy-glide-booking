@@ -5,6 +5,7 @@ import { Section } from "@/components/sections/Section";
 import { ContactForm } from "@/components/ContactForm";
 import { brand, callHref } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
+import paymentQr from "@/assets/payment-qr.png.asset.json";
 
 const title = `Contact | Book a ${brand.city} Cab by Phone or WhatsApp`;
 const description =
@@ -80,6 +81,19 @@ function ContactPage() {
                   Map will be shown here once the office location is added.
                 </div>
               )}
+            </div>
+
+            <div className="rounded-2xl border border-border bg-card p-5 text-center">
+              <p className="text-sm font-semibold">Pay by UPI</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Scan this QR with any UPI app to pay {brand.brandName}.
+              </p>
+              <img
+                src={paymentQr.url}
+                alt={`UPI payment QR code for ${brand.brandName}`}
+                loading="lazy"
+                className="mx-auto mt-4 h-40 w-40 rounded-xl bg-white p-2 sm:h-48 sm:w-48"
+              />
             </div>
           </div>
 
