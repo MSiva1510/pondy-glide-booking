@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { vehicles } from "@/data/vehicles";
 import { TRIP_TYPE_LABELS, type TripType } from "@/types";
-import { todayISO, validateTrip } from "@/lib/booking-validation";
+import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
 
 const tabs: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 
@@ -24,10 +24,11 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
     name: "",
     phone: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<FieldErrors>({});
 
-  const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-    setForm((f) => ({ ...f, [key]: e.target.value }));
+  const set =
+    (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +54,9 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
             onClick={() => setTripType(t)}
             aria-pressed={tripType === t}
             className={`flex-1 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-semibold transition-colors sm:text-sm ${
-              tripType === t ? "bg-primary text-primary-foreground shadow-card" : "text-muted-foreground hover:text-primary"
+              tripType === t
+                ? "bg-primary text-primary-foreground shadow-card"
+                : "text-muted-foreground hover:text-primary"
             }`}
           >
             {TRIP_TYPE_LABELS[t]}
@@ -63,33 +66,76 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <div>
-          <Label htmlFor="bw-pickup" className="text-xs font-semibold text-muted-foreground">Pickup Location</Label>
-          <Input id="bw-pickup" className={field} placeholder="e.g. White Town, Pondicherry" value={form.pickup} onChange={set("pickup")} />
+          <Label htmlFor="bw-pickup" className="text-xs font-semibold text-muted-foreground">
+            Pickup Location
+          </Label>
+          <Input
+            id="bw-pickup"
+            className={field}
+            placeholder="e.g. White Town, Pondicherry"
+            value={form.pickup}
+            onChange={set("pickup")}
+          />
           {errors.pickup ? <p className="mt-1 text-xs text-destructive">{errors.pickup}</p> : null}
         </div>
         <div>
           <Label htmlFor="bw-drop" className="text-xs font-semibold text-muted-foreground">
             {tripType === "LOCAL" ? "Drop / Area (optional)" : "Drop Location"}
           </Label>
-          <Input id="bw-drop" className={field} placeholder="e.g. Chennai Airport" value={form.drop} onChange={set("drop")} />
+          <Input
+            id="bw-drop"
+            className={field}
+            placeholder="e.g. Chennai Airport"
+            value={form.drop}
+            onChange={set("drop")}
+          />
           {errors.drop ? <p className="mt-1 text-xs text-destructive">{errors.drop}</p> : null}
         </div>
         <div>
-          <Label htmlFor="bw-date" className="text-xs font-semibold text-muted-foreground">Travel Date</Label>
-          <Input id="bw-date" type="date" min={todayISO()} className={field} value={form.date} onChange={set("date")} />
+          <Label htmlFor="bw-date" className="text-xs font-semibold text-muted-foreground">
+            Travel Date
+          </Label>
+          <Input
+            id="bw-date"
+            type="date"
+            min={todayISO()}
+            className={field}
+            value={form.date}
+            onChange={set("date")}
+          />
           {errors.date ? <p className="mt-1 text-xs text-destructive">{errors.date}</p> : null}
         </div>
         <div>
-          <Label htmlFor="bw-time" className="text-xs font-semibold text-muted-foreground">Pickup Time</Label>
-          <Input id="bw-time" type="time" className={field} value={form.time} onChange={set("time")} />
+          <Label htmlFor="bw-time" className="text-xs font-semibold text-muted-foreground">
+            Pickup Time
+          </Label>
+          <Input
+            id="bw-time"
+            type="time"
+            className={field}
+            value={form.time}
+            onChange={set("time")}
+          />
           {errors.time ? <p className="mt-1 text-xs text-destructive">{errors.time}</p> : null}
         </div>
         <div>
-          <Label htmlFor="bw-passengers" className="text-xs font-semibold text-muted-foreground">Passengers</Label>
-          <Input id="bw-passengers" type="number" min={1} max={20} className={field} value={form.passengers} onChange={set("passengers")} />
+          <Label htmlFor="bw-passengers" className="text-xs font-semibold text-muted-foreground">
+            Passengers
+          </Label>
+          <Input
+            id="bw-passengers"
+            type="number"
+            min={1}
+            max={20}
+            className={field}
+            value={form.passengers}
+            onChange={set("passengers")}
+          />
         </div>
         <div>
-          <Label htmlFor="bw-vehicle" className="text-xs font-semibold text-muted-foreground">Vehicle Type</Label>
+          <Label htmlFor="bw-vehicle" className="text-xs font-semibold text-muted-foreground">
+            Vehicle Type
+          </Label>
           <select
             id="bw-vehicle"
             value={form.vehicle}
@@ -97,18 +143,38 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
             className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm"
           >
             {vehicles.map((v) => (
-              <option key={v.id} value={v.id}>{v.name}</option>
+              <option key={v.id} value={v.id}>
+                {v.name}
+              </option>
             ))}
           </select>
         </div>
         <div>
-          <Label htmlFor="bw-name" className="text-xs font-semibold text-muted-foreground">Name</Label>
-          <Input id="bw-name" className={field} placeholder="Your name" value={form.name} onChange={set("name")} />
+          <Label htmlFor="bw-name" className="text-xs font-semibold text-muted-foreground">
+            Name
+          </Label>
+          <Input
+            id="bw-name"
+            className={field}
+            placeholder="Your name"
+            value={form.name}
+            onChange={set("name")}
+          />
           {errors.name ? <p className="mt-1 text-xs text-destructive">{errors.name}</p> : null}
         </div>
         <div>
-          <Label htmlFor="bw-phone" className="text-xs font-semibold text-muted-foreground">Mobile Number</Label>
-          <Input id="bw-phone" type="tel" inputMode="tel" className={field} placeholder="10-digit mobile" value={form.phone} onChange={set("phone")} />
+          <Label htmlFor="bw-phone" className="text-xs font-semibold text-muted-foreground">
+            Mobile Number
+          </Label>
+          <Input
+            id="bw-phone"
+            type="tel"
+            inputMode="tel"
+            className={field}
+            placeholder="10-digit mobile"
+            value={form.phone}
+            onChange={set("phone")}
+          />
           {errors.phone ? <p className="mt-1 text-xs text-destructive">{errors.phone}</p> : null}
         </div>
       </div>

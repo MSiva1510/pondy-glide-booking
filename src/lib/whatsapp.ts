@@ -2,22 +2,23 @@ import { brand } from "@/config/brand";
 import { TRIP_TYPE_LABELS, type TripType } from "@/types";
 
 export interface WhatsAppTrip {
-  customerName?: string;
-  pickup?: string;
-  drop?: string;
-  date?: string;
-  time?: string;
-  tripType?: TripType;
-  passengers?: number | string;
-  vehicle?: string;
-  bookingId?: string;
-  note?: string;
+  customerName?: string | undefined;
+  pickup?: string | undefined;
+  drop?: string | undefined;
+  date?: string | undefined;
+  time?: string | undefined;
+  tripType?: TripType | undefined;
+  passengers?: number | string | undefined;
+  vehicle?: string | undefined;
+  bookingId?: string | undefined;
+  note?: string | undefined;
 }
 
 export function buildWhatsAppMessage(trip: WhatsAppTrip = {}): string {
   const lines = ["Hello, I would like to book a cab.", ""];
   const push = (label: string, value?: string | number) => {
-    if (value !== undefined && value !== null && `${value}`.trim() !== "") lines.push(`${label}: ${value}`);
+    if (value !== undefined && value !== null && `${value}`.trim() !== "")
+      lines.push(`${label}: ${value}`);
   };
   push("Booking ID", trip.bookingId);
   push("Name", trip.customerName);

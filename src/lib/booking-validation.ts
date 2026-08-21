@@ -1,5 +1,9 @@
 import type { TripType } from "@/types";
 
+export type FieldErrors = Partial<
+  Record<"pickup" | "drop" | "date" | "time" | "name" | "phone" | "vehicle", string>
+>;
+
 export function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -17,9 +21,10 @@ export function validateTrip(input: {
   phone?: string;
   tripType: TripType;
 }) {
-  const errors: Record<string, string> = {};
+  const errors: FieldErrors = {};
   if (!input.pickup.trim()) errors.pickup = "Please enter a pickup location.";
-  if (input.tripType !== "LOCAL" && !input.drop.trim()) errors.drop = "Please enter a drop location.";
+  if (input.tripType !== "LOCAL" && !input.drop.trim())
+    errors.drop = "Please enter a drop location.";
   if (!input.date) errors.date = "Please choose a travel date.";
   else if (input.date < todayISO()) errors.date = "Travel date cannot be in the past.";
   if (!input.time) errors.time = "Please choose a pickup time.";

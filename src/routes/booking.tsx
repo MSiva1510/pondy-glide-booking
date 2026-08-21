@@ -10,18 +10,33 @@ const description =
 const tripTypes: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 const str = (v: unknown) => (typeof v === "string" && v.trim() !== "" ? v : undefined);
 
+export interface BookingSearch {
+  pickup?: string | undefined;
+  drop?: string | undefined;
+  date?: string | undefined;
+  time?: string | undefined;
+  passengers?: string | undefined;
+  vehicle?: string | undefined;
+  name?: string | undefined;
+  phone?: string | undefined;
+  service?: string | undefined;
+  tripType?: TripType | undefined;
+}
+
 export const Route = createFileRoute("/booking")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    pickup: str(search.pickup),
-    drop: str(search.drop),
-    date: str(search.date),
-    time: str(search.time),
-    passengers: str(search.passengers),
-    vehicle: str(search.vehicle),
-    name: str(search.name),
-    phone: str(search.phone),
-    service: str(search.service),
-    tripType: tripTypes.includes(search.tripType as TripType) ? (search.tripType as TripType) : undefined,
+  validateSearch: (search: Record<string, unknown>): BookingSearch => ({
+    pickup: str(search["pickup"]),
+    drop: str(search["drop"]),
+    date: str(search["date"]),
+    time: str(search["time"]),
+    passengers: str(search["passengers"]),
+    vehicle: str(search["vehicle"]),
+    name: str(search["name"]),
+    phone: str(search["phone"]),
+    service: str(search["service"]),
+    tripType: tripTypes.includes(search["tripType"] as TripType)
+      ? (search["tripType"] as TripType)
+      : undefined,
   }),
   head: () => ({
     meta: [

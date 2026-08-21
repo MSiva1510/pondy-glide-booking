@@ -13,7 +13,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading } from "./Section";
-import { PricingCard, RouteCard, ServiceCard, TestimonialCard, VehicleCard } from "@/components/cards";
+import {
+  PricingCard,
+  RouteCard,
+  ServiceCard,
+  TestimonialCard,
+  VehicleCard,
+} from "@/components/cards";
 import { services } from "@/data/services";
 import { vehicles } from "@/data/vehicles";
 import { pricingDisclaimer, pricingTiers } from "@/data/pricing";
@@ -69,11 +75,16 @@ export function WhoWeAre() {
           />
         </div>
         <div>
-          <SectionHeading align="left" eyebrow="Who We Are" title="Travel across Pondicherry with people who know the roads" />
+          <SectionHeading
+            align="left"
+            eyebrow="Who We Are"
+            title="Travel across Pondicherry with people who know the roads"
+          />
           <p className="mt-4 text-base text-muted-foreground">
-            We are a {brand.city}-based travel and cab service focused on making every journey comfortable,
-            dependable and stress-free. From quick local rides to airport transfers, sightseeing and
-            long-distance journeys, we connect travellers with reliable vehicles and professional service.
+            We are a {brand.city}-based travel and cab service focused on making every journey
+            comfortable, dependable and stress-free. From quick local rides to airport transfers,
+            sightseeing and long-distance journeys, we connect travellers with reliable vehicles and
+            professional service.
           </p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {points.map((p) => (
@@ -110,19 +121,46 @@ export function ServicesGrid() {
 
 export function WhyChooseUs() {
   const cards = [
-    { icon: ShieldCheck, title: "Reliable Service", text: "We focus on dependable pickups and smooth journeys." },
-    { icon: Car, title: "Comfortable Cars", text: "Clean and well-maintained vehicles for every trip." },
-    { icon: Smile, title: "Professional Drivers", text: "Experienced drivers focused on safe and courteous travel." },
-    { icon: Wallet, title: "Transparent Booking", text: "Clear trip information before you confirm." },
-    { icon: MapPinned, title: "Local Expertise", text: "Pondicherry-based, with knowledge of local and regional routes." },
-    { icon: Sparkles, title: "Easy Booking", text: "Book online, call us or send a message on WhatsApp." },
+    {
+      icon: ShieldCheck,
+      title: "Reliable Service",
+      text: "We focus on dependable pickups and smooth journeys.",
+    },
+    {
+      icon: Car,
+      title: "Comfortable Cars",
+      text: "Clean and well-maintained vehicles for every trip.",
+    },
+    {
+      icon: Smile,
+      title: "Professional Drivers",
+      text: "Experienced drivers focused on safe and courteous travel.",
+    },
+    {
+      icon: Wallet,
+      title: "Transparent Booking",
+      text: "Clear trip information before you confirm.",
+    },
+    {
+      icon: MapPinned,
+      title: "Local Expertise",
+      text: "Pondicherry-based, with knowledge of local and regional routes.",
+    },
+    {
+      icon: Sparkles,
+      title: "Easy Booking",
+      text: "Book online, call us or send a message on WhatsApp.",
+    },
   ];
   return (
     <Section>
       <SectionHeading eyebrow="Why Choose Us" title="Travel With Confidence" />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map(({ icon: Icon, title, text }) => (
-          <article key={title} className="rounded-3xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-card">
+          <article
+            key={title}
+            className="rounded-3xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-card"
+          >
             <Icon className="size-7 text-aqua" aria-hidden="true" />
             <h3 className="mt-4 text-lg font-semibold">{title}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{text}</p>
@@ -146,7 +184,9 @@ export function PricingSection() {
           <PricingCard key={t.id} tier={t} />
         ))}
       </div>
-      <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-muted-foreground">{pricingDisclaimer}</p>
+      <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-muted-foreground">
+        {pricingDisclaimer}
+      </p>
     </Section>
   );
 }
@@ -178,7 +218,10 @@ export function DiscoverPondicherry() {
       />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {places.map((p) => (
-          <article key={p.id} className="group overflow-hidden rounded-3xl border border-border bg-card">
+          <article
+            key={p.id}
+            className="group overflow-hidden rounded-3xl border border-border bg-card"
+          >
             <div className="aspect-[4/3] overflow-hidden">
               <img
                 src={p.image}
@@ -198,7 +241,9 @@ export function DiscoverPondicherry() {
       </div>
       <div className="mt-8 text-center">
         <Button asChild size="lg" className="rounded-full px-7">
-          <Link to="/booking" search={{ service: "sightseeing", tripType: "LOCAL" }}>Book a Sightseeing Cab</Link>
+          <Link to="/booking" search={{ service: "sightseeing", tripType: "LOCAL" }}>
+            Book a Sightseeing Cab
+          </Link>
         </Button>
       </div>
     </Section>
@@ -210,7 +255,12 @@ export function PopularRoutesSection() {
     <Section>
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div>
-          <SectionHeading align="left" eyebrow="Popular Routes" title="Outstation trips from Pondicherry" description="One-way and round-trip options on the routes travellers ask for most." />
+          <SectionHeading
+            align="left"
+            eyebrow="Popular Routes"
+            title="Outstation trips from Pondicherry"
+            description="One-way and round-trip options on the routes travellers ask for most."
+          />
           <div className="mt-6 overflow-hidden rounded-3xl shadow-card">
             <img
               src={routesBanner}
@@ -234,15 +284,26 @@ export function PopularRoutesSection() {
 
 export function HowItWorks() {
   const steps = [
-    { n: "01", title: "Tell Us Your Trip", text: "Enter pickup, destination, date and travel requirements." },
+    {
+      n: "01",
+      title: "Tell Us Your Trip",
+      text: "Enter pickup, destination, date and travel requirements.",
+    },
     { n: "02", title: "Choose Your Ride", text: "Select the vehicle that fits your journey." },
-    { n: "03", title: "Confirm & Travel", text: "Receive booking confirmation and enjoy the journey." },
+    {
+      n: "03",
+      title: "Confirm & Travel",
+      text: "Receive booking confirmation and enjoy the journey.",
+    },
   ];
   return (
     <Section tone="soft">
       <SectionHeading eyebrow="How Booking Works" title="Three simple steps" />
       <ol className="relative mt-10 grid gap-6 lg:grid-cols-3">
-        <span className="absolute left-0 right-0 top-11 hidden h-px bg-border lg:block" aria-hidden="true" />
+        <span
+          className="absolute left-0 right-0 top-11 hidden h-px bg-border lg:block"
+          aria-hidden="true"
+        />
         {steps.map((s) => (
           <li key={s.n} className="relative rounded-3xl border border-border bg-card p-6">
             <span className="gradient-hero inline-flex size-11 items-center justify-center rounded-2xl text-sm font-bold text-ocean-foreground">
@@ -260,7 +321,11 @@ export function HowItWorks() {
 export function TestimonialsSection() {
   return (
     <Section>
-      <SectionHeading eyebrow="Testimonials" title="What travellers say" description="Placeholder reviews shown until verified customer feedback is added." />
+      <SectionHeading
+        eyebrow="Testimonials"
+        title="What travellers say"
+        description="Placeholder reviews shown until verified customer feedback is added."
+      />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {testimonials.map((t) => (
           <TestimonialCard key={t.id} testimonial={t} />
@@ -279,15 +344,29 @@ export function FinalCTA() {
           Book it quickly, travel comfortably, and let us handle the journey.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button asChild size="lg" className="h-12 rounded-full bg-background px-7 text-primary hover:bg-background/90">
+          <Button
+            asChild
+            size="lg"
+            className="h-12 rounded-full bg-background px-7 text-primary hover:bg-background/90"
+          >
             <Link to="/booking">Book a Cab</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="h-12 rounded-full border-white/40 bg-white/10 px-7 text-ocean-foreground hover:bg-white/20 hover:text-ocean-foreground">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="h-12 rounded-full border-white/40 bg-white/10 px-7 text-ocean-foreground hover:bg-white/20 hover:text-ocean-foreground"
+          >
             <a href={whatsAppHref()} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="size-4" aria-hidden="true" /> WhatsApp Us
             </a>
           </Button>
-          <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-ocean-foreground hover:bg-white/15 hover:text-ocean-foreground">
+          <Button
+            asChild
+            size="lg"
+            variant="ghost"
+            className="h-12 rounded-full px-7 text-ocean-foreground hover:bg-white/15 hover:text-ocean-foreground"
+          >
             <a href={callHref}>
               <Phone className="size-4" aria-hidden="true" /> {brand.phoneDisplay}
             </a>

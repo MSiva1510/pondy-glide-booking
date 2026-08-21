@@ -63,18 +63,32 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           </div>
           <p className="text-right text-sm font-bold text-primary">
             ₹{vehicle.basePricePerKm}
-            <span className="block text-[10px] font-medium text-muted-foreground">starting / km</span>
+            <span className="block text-[10px] font-medium text-muted-foreground">
+              starting / km
+            </span>
           </p>
         </div>
         <ul className="mt-4 flex flex-wrap gap-3 text-xs text-muted-foreground">
-          <li className="flex items-center gap-1"><Users className="size-3.5" aria-hidden="true" /> {vehicle.passengers} passengers</li>
-          <li className="flex items-center gap-1"><Briefcase className="size-3.5" aria-hidden="true" /> {vehicle.luggage} bags</li>
-          {vehicle.ac ? <li className="flex items-center gap-1"><Snowflake className="size-3.5" aria-hidden="true" /> AC</li> : null}
+          <li className="flex items-center gap-1">
+            <Users className="size-3.5" aria-hidden="true" /> {vehicle.passengers} passengers
+          </li>
+          <li className="flex items-center gap-1">
+            <Briefcase className="size-3.5" aria-hidden="true" /> {vehicle.luggage} bags
+          </li>
+          {vehicle.ac ? (
+            <li className="flex items-center gap-1">
+              <Snowflake className="size-3.5" aria-hidden="true" /> AC
+            </li>
+          ) : null}
           <li>{vehicle.transmission}</li>
         </ul>
-        <p className="mt-3 text-[11px] text-muted-foreground">Availability depends on date and booking request.</p>
+        <p className="mt-3 text-[11px] text-muted-foreground">
+          Availability depends on date and booking request.
+        </p>
         <Button asChild className="mt-4 w-full rounded-xl">
-          <Link to="/booking" search={{ vehicle: vehicle.id }}>Book Now</Link>
+          <Link to="/booking" search={{ vehicle: vehicle.id }}>
+            Book Now
+          </Link>
         </Button>
       </div>
     </article>
@@ -87,7 +101,9 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
       <h3 className="text-lg font-semibold">{tier.title}</h3>
       <p className="text-xs text-muted-foreground">{tier.subtitle}</p>
       <p className="mt-4 text-3xl font-bold text-primary">{tier.price}</p>
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{tier.unit}</p>
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        {tier.unit}
+      </p>
       <ul className="mt-4 flex-1 space-y-2 text-sm text-muted-foreground">
         {tier.includes.map((i) => (
           <li key={i} className="flex items-start gap-2">
@@ -133,7 +149,9 @@ export function RouteCard({ route }: { route: PopularRoute }) {
 export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <figure className="rounded-3xl border border-border bg-card p-6">
-      <blockquote className="text-sm leading-relaxed text-foreground">“{testimonial.quote}”</blockquote>
+      <blockquote className="text-sm leading-relaxed text-foreground">
+        “{testimonial.quote}”
+      </blockquote>
       <figcaption className="mt-4 text-xs text-muted-foreground">
         <span className="font-semibold text-foreground">— {testimonial.name}</span>
         <span className="block">{testimonial.trip}</span>

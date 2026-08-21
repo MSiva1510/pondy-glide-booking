@@ -11,8 +11,8 @@ export function Footer() {
         <div>
           <p className="text-lg font-bold">{brand.brandName}</p>
           <p className="mt-3 max-w-xs text-sm text-primary-foreground/70">
-            A {brand.city}-based cab, taxi and car rental service for local rides, airport transfers,
-            sightseeing and outstation journeys across South India.
+            A {brand.city}-based cab, taxi and car rental service for local rides, airport
+            transfers, sightseeing and outstation journeys across South India.
           </p>
         </div>
 
@@ -41,7 +41,11 @@ export function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm text-primary-foreground/75">
             {services.map((s) => (
               <li key={s.slug}>
-                <Link to="/booking" search={{ service: s.slug }} className="transition-colors hover:text-accent">
+                <Link
+                  to="/booking"
+                  search={{ service: s.slug }}
+                  className="transition-colors hover:text-accent"
+                >
                   {s.title}
                 </Link>
               </li>
@@ -53,7 +57,10 @@ export function Footer() {
           <p className="text-sm font-semibold uppercase tracking-wider text-accent">Contact</p>
           <ul className="mt-4 space-y-3 text-sm text-primary-foreground/75">
             <li>
-              <a href={callHref} className="flex items-center gap-2 transition-colors hover:text-accent">
+              <a
+                href={callHref}
+                className="flex items-center gap-2 transition-colors hover:text-accent"
+              >
                 <Phone className="size-4" aria-hidden="true" /> {brand.phoneDisplay}
               </a>
             </li>
@@ -76,10 +83,16 @@ export function Footer() {
 
       <div className="border-t border-primary-foreground/15">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-primary-foreground/60 sm:flex-row sm:px-6">
-          <p>© {new Date().getFullYear()} {brand.brandName}. All Rights Reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {brand.brandName}. All Rights Reserved.
+          </p>
           <div className="flex gap-5">
-            <Link to="/privacy-policy" className="hover:text-accent">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-accent">Terms & Conditions</Link>
+            <Link to="/privacy-policy" className="hover:text-accent">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-accent">
+              Terms & Conditions
+            </Link>
           </div>
         </div>
       </div>

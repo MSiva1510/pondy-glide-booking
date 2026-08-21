@@ -29,10 +29,15 @@ export function Navbar() {
   return (
     <header
       className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${
-        scrolled ? "border-border bg-background/90 py-1.5 backdrop-blur-xl" : "border-transparent bg-background py-3"
+        scrolled
+          ? "border-border bg-background/90 py-1.5 backdrop-blur-xl"
+          : "border-transparent bg-background py-3"
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6" aria-label="Main">
+      <nav
+        className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6"
+        aria-label="Main"
+      >
         <Logo />
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -63,12 +68,24 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
-          <Button asChild variant="ghost" size="icon" className="rounded-full" aria-label={`Call ${brand.phoneDisplay}`}>
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            aria-label={`Call ${brand.phoneDisplay}`}
+          >
             <a href={callHref}>
               <Phone className="size-5" aria-hidden="true" />
             </a>
           </Button>
-          <Button asChild variant="ghost" size="icon" className="rounded-full" aria-label="Chat on WhatsApp">
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            aria-label="Chat on WhatsApp"
+          >
             <a href={whatsAppHref()} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="size-5" aria-hidden="true" />
             </a>
@@ -81,7 +98,11 @@ export function Navbar() {
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
+            {open ? (
+              <X className="size-5" aria-hidden="true" />
+            ) : (
+              <Menu className="size-5" aria-hidden="true" />
+            )}
           </Button>
         </div>
       </nav>

@@ -42,7 +42,7 @@ export function HeroSlider() {
     return () => clearInterval(id);
   }, []);
 
-  const slide = slides[index];
+  const slide = slides[index] ?? slides[0]!;
 
   return (
     <section className="relative overflow-hidden bg-primary" aria-label="Pondicherry cab booking">
@@ -69,10 +69,16 @@ export function HeroSlider() {
           <p className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider backdrop-blur">
             Pondicherry • Puducherry
           </p>
-          <h1 className="mt-4 text-4xl font-bold leading-[1.08] sm:text-5xl lg:text-6xl">{slide.title}</h1>
+          <h1 className="mt-4 text-4xl font-bold leading-[1.08] sm:text-5xl lg:text-6xl">
+            {slide.title}
+          </h1>
           <p className="mt-4 text-base text-ocean-foreground/85 sm:text-lg">{slide.subtitle}</p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="h-12 rounded-full bg-accent px-7 text-accent-foreground hover:bg-accent/90">
+            <Button
+              asChild
+              size="lg"
+              className="h-12 rounded-full bg-accent px-7 text-accent-foreground hover:bg-accent/90"
+            >
               <Link to="/booking">{slide.cta}</Link>
             </Button>
             <Button
