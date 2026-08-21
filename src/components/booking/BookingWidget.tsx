@@ -62,7 +62,7 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
               aria-selected={tripType === t}
               className={`w-[calc(100%-0.5rem)] shrink-0 snap-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors sm:w-auto sm:flex-1 ${
                 tripType === t
-                  ? "bg-primary text-primary-foreground shadow-card"
+                  ? "bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%] text-white shadow-card"
                   : "text-muted-foreground hover:text-primary"
               }`}
             >
