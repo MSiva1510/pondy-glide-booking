@@ -20,6 +20,9 @@ import { getAvailableVehicles } from "@/services/fleetService";
 import { submitBooking } from "@/services/bookingService";
 import { estimateFare } from "@/services/pricingService";
 import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
+import { LocationField } from "@/components/booking/LocationField";
+import { DateField, TimeField } from "@/components/booking/DateTimeField";
+
 import { whatsAppHref } from "@/lib/whatsapp";
 import { brand, callHref } from "@/config/brand";
 import { TRIP_TYPE_LABELS, type Booking, type TripType } from "@/types";
