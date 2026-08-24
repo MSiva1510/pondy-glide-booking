@@ -8,6 +8,9 @@ import { whatsAppHref } from "@/lib/whatsapp";
 import { vehicles } from "@/data/vehicles";
 import { TRIP_TYPE_LABELS, type TripType } from "@/types";
 import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
+import { LocationField } from "@/components/booking/LocationField";
+import { DateField, TimeField } from "@/components/booking/DateTimeField";
+
 
 const tabs: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 
