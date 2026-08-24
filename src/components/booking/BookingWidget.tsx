@@ -8,6 +8,9 @@ import { whatsAppHref } from "@/lib/whatsapp";
 import { vehicles } from "@/data/vehicles";
 import { TRIP_TYPE_LABELS, type TripType } from "@/types";
 import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
+import { LocationField } from "@/components/booking/LocationField";
+import { DateField, TimeField } from "@/components/booking/DateTimeField";
+
 
 const tabs: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 
@@ -80,12 +83,11 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           <Label htmlFor="bw-pickup" className="text-xs font-semibold text-muted-foreground">
             Pickup Location
           </Label>
-          <Input
+          <LocationField
             id="bw-pickup"
-            className={field}
             placeholder="e.g. White Town, Pondicherry"
             value={form.pickup}
-            onChange={set("pickup")}
+            onChange={(v) => setForm((f) => ({ ...f, pickup: v }))}
           />
           {errors.pickup ? <p className="mt-1 text-xs text-destructive">{errors.pickup}</p> : null}
         </div>
@@ -93,12 +95,11 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           <Label htmlFor="bw-drop" className="text-xs font-semibold text-muted-foreground">
             {tripType === "LOCAL" ? "Drop / Area (optional)" : "Drop Location"}
           </Label>
-          <Input
+          <LocationField
             id="bw-drop"
-            className={field}
             placeholder="e.g. Chennai Airport"
             value={form.drop}
-            onChange={set("drop")}
+            onChange={(v) => setForm((f) => ({ ...f, drop: v }))}
           />
           {errors.drop ? <p className="mt-1 text-xs text-destructive">{errors.drop}</p> : null}
         </div>
@@ -106,13 +107,11 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           <Label htmlFor="bw-date" className="text-xs font-semibold text-muted-foreground">
             Travel Date
           </Label>
-          <Input
+          <DateField
             id="bw-date"
-            type="date"
-            min={todayISO()}
-            className={field}
+            minISO={todayISO()}
             value={form.date}
-            onChange={set("date")}
+            onChange={(v) => setForm((f) => ({ ...f, date: v }))}
           />
           {errors.date ? <p className="mt-1 text-xs text-destructive">{errors.date}</p> : null}
         </div>
@@ -120,15 +119,14 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           <Label htmlFor="bw-time" className="text-xs font-semibold text-muted-foreground">
             Pickup Time
           </Label>
-          <Input
+          <TimeField
             id="bw-time"
-            type="time"
-            className={field}
             value={form.time}
-            onChange={set("time")}
+            onChange={(v) => setForm((f) => ({ ...f, time: v }))}
           />
           {errors.time ? <p className="mt-1 text-xs text-destructive">{errors.time}</p> : null}
         </div>
+
         <div>
           <Label htmlFor="bw-passengers" className="text-xs font-semibold text-muted-foreground">
             Passengers
