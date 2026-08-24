@@ -192,10 +192,10 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               </select>
             </div>
             <Field id="bf-pickup" label="Pickup Location" error={errors.pickup}>
-              <Input
+              <LocationField
                 id="bf-pickup"
                 value={form.pickup}
-                onChange={(e) => set("pickup", e.target.value)}
+                onChange={(v) => set("pickup", v)}
                 placeholder="Pickup address or area"
               />
             </Field>
@@ -204,30 +204,25 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               label={form.tripType === "LOCAL" ? "Drop / Area (optional)" : "Drop Location"}
               error={errors.drop}
             >
-              <Input
+              <LocationField
                 id="bf-drop"
                 value={form.drop}
-                onChange={(e) => set("drop", e.target.value)}
+                onChange={(v) => set("drop", v)}
                 placeholder="Destination"
               />
             </Field>
             <Field id="bf-date" label="Travel Date" error={errors.date}>
-              <Input
+              <DateField
                 id="bf-date"
-                type="date"
-                min={todayISO()}
+                minISO={todayISO()}
                 value={form.date}
-                onChange={(e) => set("date", e.target.value)}
+                onChange={(v) => set("date", v)}
               />
             </Field>
             <Field id="bf-time" label="Pickup Time" error={errors.time}>
-              <Input
-                id="bf-time"
-                type="time"
-                value={form.time}
-                onChange={(e) => set("time", e.target.value)}
-              />
+              <TimeField id="bf-time" value={form.time} onChange={(v) => set("time", v)} />
             </Field>
+
           </div>
           <StepNav onNext={goStep1Next} nextLabel="Choose Vehicle" />
         </div>
