@@ -11,7 +11,6 @@ import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validati
 import { LocationField } from "@/components/booking/LocationField";
 import { DateField, TimeField } from "@/components/booking/DateTimeField";
 
-
 const tabs: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 
 export function BookingWidget({ compact = false }: { compact?: boolean }) {
@@ -76,7 +75,6 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
         <div className="pointer-events-none absolute inset-y-0 left-0 w-6 rounded-l-2xl bg-gradient-to-r from-secondary to-transparent sm:hidden" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-6 rounded-r-2xl bg-gradient-to-l from-secondary to-transparent sm:hidden" />
       </div>
-
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <div>

@@ -70,8 +70,8 @@ export function LocationField({
     return () => {
       active = false;
       window.clearTimeout(t);
-      window.clearTimeout(t);
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 

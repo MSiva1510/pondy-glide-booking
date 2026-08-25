@@ -225,7 +225,6 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
             <Field id="bf-time" label="Pickup Time" error={errors.time}>
               <TimeField id="bf-time" value={form.time} onChange={(v) => set("time", v)} />
             </Field>
-
           </div>
           <StepNav onNext={goStep1Next} nextLabel="Choose Vehicle" />
         </div>
