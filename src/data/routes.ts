@@ -5,18 +5,12 @@ export interface PopularRoute {
   distanceKm: number;
   approxHours: string;
   types: string[];
+  /** One-way drop fare for the 4+1 sedan, in INR. */
+  fare?: number;
 }
 
-// Editable route data — distances are approximate.
+// Editable route data — distances are approximate, fares are one-way drops.
 export const popularRoutes: PopularRoute[] = [
-  {
-    id: "chennai",
-    from: "Pondicherry",
-    to: "Chennai",
-    distanceKm: 155,
-    approxHours: "3h 30m",
-    types: ["One Way", "Round Trip"],
-  },
   {
     id: "chennai-airport",
     from: "Pondicherry",
@@ -24,6 +18,16 @@ export const popularRoutes: PopularRoute[] = [
     distanceKm: 165,
     approxHours: "3h 45m",
     types: ["One Way", "Round Trip"],
+    fare: 4200,
+  },
+  {
+    id: "chennai",
+    from: "Pondicherry",
+    to: "Chennai City",
+    distanceKm: 155,
+    approxHours: "3h 30m",
+    types: ["One Way", "Round Trip"],
+    fare: 4600,
   },
   {
     id: "mahabalipuram",
@@ -32,6 +36,7 @@ export const popularRoutes: PopularRoute[] = [
     distanceKm: 95,
     approxHours: "2h 15m",
     types: ["One Way", "Round Trip"],
+    fare: 3500,
   },
   {
     id: "tiruvannamalai",
@@ -40,38 +45,7 @@ export const popularRoutes: PopularRoute[] = [
     distanceKm: 105,
     approxHours: "2h 30m",
     types: ["One Way", "Round Trip"],
-  },
-  {
-    id: "tirupati",
-    from: "Pondicherry",
-    to: "Tirupati",
-    distanceKm: 280,
-    approxHours: "6h",
-    types: ["Round Trip"],
-  },
-  {
-    id: "bangalore",
-    from: "Pondicherry",
-    to: "Bangalore",
-    distanceKm: 320,
-    approxHours: "6h 30m",
-    types: ["One Way", "Round Trip"],
-  },
-  {
-    id: "trichy",
-    from: "Pondicherry",
-    to: "Trichy",
-    distanceKm: 200,
-    approxHours: "4h",
-    types: ["One Way", "Round Trip"],
-  },
-  {
-    id: "thanjavur",
-    from: "Pondicherry",
-    to: "Thanjavur",
-    distanceKm: 175,
-    approxHours: "3h 30m",
-    types: ["One Way", "Round Trip"],
+    fare: 3500,
   },
   {
     id: "chidambaram",
@@ -80,6 +54,7 @@ export const popularRoutes: PopularRoute[] = [
     distanceKm: 65,
     approxHours: "1h 30m",
     types: ["One Way", "Round Trip"],
+    fare: 3000,
   },
   {
     id: "pichavaram",
@@ -88,5 +63,42 @@ export const popularRoutes: PopularRoute[] = [
     distanceKm: 75,
     approxHours: "1h 45m",
     types: ["Round Trip"],
+    fare: 3000,
+  },
+  {
+    id: "thanjavur",
+    from: "Pondicherry",
+    to: "Thanjavur",
+    distanceKm: 175,
+    approxHours: "3h 30m",
+    types: ["One Way", "Round Trip"],
+    fare: 5500,
+  },
+  {
+    id: "tirupati",
+    from: "Pondicherry",
+    to: "Tirupati",
+    distanceKm: 280,
+    approxHours: "6h",
+    types: ["One Way", "Round Trip"],
+    fare: 7000,
+  },
+  {
+    id: "bangalore",
+    from: "Pondicherry",
+    to: "Bangalore",
+    distanceKm: 320,
+    approxHours: "6h 30m",
+    types: ["One Way", "Round Trip"],
+    fare: 10000,
+  },
+  {
+    id: "madurai",
+    from: "Pondicherry",
+    to: "Madurai",
+    distanceKm: 330,
+    approxHours: "6h 30m",
+    types: ["One Way", "Round Trip"],
+    fare: 9500,
   },
 ];
