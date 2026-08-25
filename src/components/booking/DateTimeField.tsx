@@ -11,10 +11,7 @@ import {
 } from "@/components/ui/drawer";
 import { WheelPicker, type WheelOption } from "@/components/ui/wheel-picker";
 
-const MONTHS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const range = (from: number, to: number): WheelOption[] =>
@@ -156,7 +153,9 @@ export function TimeField({
 
   const hour24 = (hour12 % 12) + (meridiem === "PM" ? 12 : 0);
   const iso = `${pad(hour24)}:${pad(minute)}`;
-  const display = value ? `${((Number(value.slice(0, 2)) + 11) % 12) + 1}:${value.slice(3, 5)} ${Number(value.slice(0, 2)) >= 12 ? "PM" : "AM"}` : placeholder;
+  const display = value
+    ? `${((Number(value.slice(0, 2)) + 11) % 12) + 1}:${value.slice(3, 5)} ${Number(value.slice(0, 2)) >= 12 ? "PM" : "AM"}`
+    : placeholder;
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
