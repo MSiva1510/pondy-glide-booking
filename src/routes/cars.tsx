@@ -8,7 +8,7 @@ import { brand } from "@/config/brand";
 
 const title = `Cars & Fleet | ${brand.city} Car Rental with Driver`;
 const description =
-  "Sedans, SUVs, Innova, Innova Crysta and Tempo Traveller for Pondicherry local trips, airport transfers and outstation journeys.";
+  "Swift Dzire (4+1), Kia Carens (6+1) and Toyota Innova (7 seater) for Pondicherry local trips, sightseeing, airport transfers and outstation journeys.";
 
 export const Route = createFileRoute("/cars")({
   head: () => ({

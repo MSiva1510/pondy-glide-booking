@@ -22,6 +22,7 @@ import { estimateFare } from "@/services/pricingService";
 import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
 import { LocationField } from "@/components/booking/LocationField";
 import { DateField, TimeField } from "@/components/booking/DateTimeField";
+import { IosSelect } from "@/components/ui/ios-select";
 
 import { whatsAppHref } from "@/lib/whatsapp";
 import { brand, callHref } from "@/config/brand";

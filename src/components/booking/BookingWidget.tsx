@@ -10,6 +10,7 @@ import { TRIP_TYPE_LABELS, type TripType } from "@/types";
 import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
 import { LocationField } from "@/components/booking/LocationField";
 import { DateField, TimeField } from "@/components/booking/DateTimeField";
+import { IosSelect } from "@/components/ui/ios-select";
 
 const tabs: TripType[] = ["ONE_WAY", "ROUND_TRIP", "LOCAL", "AIRPORT"];
 
