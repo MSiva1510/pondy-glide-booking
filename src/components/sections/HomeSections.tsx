@@ -197,7 +197,7 @@ export function FleetSection() {
       <SectionHeading
         eyebrow="Our Fleet"
         title="Choose Your Ride"
-        description="From compact sedans to group-friendly tempo travellers."
+        description="Clean, well-maintained vehicles — Swift Dzire, Kia Carens and Toyota Innova."
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {vehicles.map((v) => (

@@ -129,6 +129,12 @@ export function RouteCard({ route }: { route: PopularRoute }) {
         <p className="mt-1 text-xs text-muted-foreground">
           ~{route.distanceKm} km · {route.approxHours} · {route.types.join(" / ")}
         </p>
+        {route.fare ? (
+          <p className="mt-1 text-xs font-bold text-primary">
+            From ₹{route.fare.toLocaleString("en-IN")}
+            <span className="font-medium text-muted-foreground"> · one way</span>
+          </p>
+        ) : null}
       </div>
       <Button asChild size="sm" variant="secondary" className="shrink-0 rounded-full">
         <Link
