@@ -181,18 +181,18 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <Label htmlFor="bf-triptype">Trip Type</Label>
-              <select
-                id="bf-triptype"
-                value={form.tripType}
-                onChange={(e) => set("tripType", e.target.value as TripType)}
-                className="mt-1 h-11 w-full rounded-xl border border-input bg-background px-3 text-sm"
-              >
-                {(Object.keys(TRIP_TYPE_LABELS) as TripType[]).map((t) => (
-                  <option key={t} value={t}>
-                    {TRIP_TYPE_LABELS[t]}
-                  </option>
-                ))}
-              </select>
+              <div className="mt-1">
+                <IosSelect
+                  id="bf-triptype"
+                  title="Trip type"
+                  value={form.tripType}
+                  onChange={(v) => set("tripType", v as TripType)}
+                  options={(Object.keys(TRIP_TYPE_LABELS) as TripType[]).map((t) => ({
+                    value: t,
+                    label: TRIP_TYPE_LABELS[t],
+                  }))}
+                />
+              </div>
             </div>
             <Field id="bf-pickup" label="Pickup Location" error={errors.pickup}>
               <LocationField

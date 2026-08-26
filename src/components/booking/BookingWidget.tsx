@@ -143,18 +143,17 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           <Label htmlFor="bw-vehicle" className="text-xs font-semibold text-muted-foreground">
             Vehicle Type
           </Label>
-          <select
+          <IosSelect
             id="bw-vehicle"
+            title="Choose a vehicle"
             value={form.vehicle}
-            onChange={set("vehicle")}
-            className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm"
-          >
-            {vehicles.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name}
-              </option>
-            ))}
-          </select>
+            onChange={(v) => setForm((f) => ({ ...f, vehicle: v }))}
+            options={vehicles.map((v) => ({
+              value: v.id,
+              label: v.name,
+              hint: v.category,
+            }))}
+          />
         </div>
         <div>
           <Label htmlFor="bw-name" className="text-xs font-semibold text-muted-foreground">
