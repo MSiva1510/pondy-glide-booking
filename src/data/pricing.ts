@@ -55,11 +55,7 @@ export const pricingTiers: PricingTier[] = [
     subtitle: "Drop or pickup",
     price: "₹4,200",
     unit: "one way",
-    includes: [
-      "Chennai city ₹4,600",
-      "ECR tollgate included",
-      "With 2 hrs Mahabalipuram ₹5,200",
-    ],
+    includes: ["Chennai city ₹4,600", "ECR tollgate included", "With 2 hrs Mahabalipuram ₹5,200"],
   },
   {
     id: "outstation",
