@@ -120,7 +120,7 @@ export function LocationField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => suggestions.length > 0 && setOpenList(true)}
-          onBlur={() => window.setTimeout(() => setOpenList(false), 150)}
+          onBlur={() => setOpenList(false)}
           placeholder={placeholder}
           autoComplete="off"
           className="h-11 rounded-xl bg-background pl-9 pr-24"
