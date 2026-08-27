@@ -145,7 +145,7 @@ export function LocationField({
             <li key={s.placeId}>
               <button
                 type="button"
-                onMouseDown={(e) => e.preventDefault()}
+                onPointerDown={(e) => e.preventDefault()}
                 onClick={() => void choose(s)}
                 className="flex w-full items-start gap-2 px-4 py-2.5 text-left hover:bg-secondary"
               >
