@@ -73,9 +73,15 @@ export const autocompletePlaces = createServerFn({ method: "POST" })
 export const getPlaceLocation = createServerFn({ method: "POST" })
   .inputValidator((data) => z.object({ placeId: z.string().min(3).max(300) }).parse(data))
   .handler(async ({ data }) => {
-    const response = await fetch(`${GATEWAY_URL}/places/v1/places/${encodeURIComponent(data.placeId)}`, {
-      headers: { ...gatewayHeaders(), "X-Goog-FieldMask": "location,formattedAddress,displayName" },
-    });
+    const response = await fetch(
+      `${GATEWAY_URL}/places/v1/places/${encodeURIComponent(data.placeId)}`,
+      {
+        headers: {
+          ...gatewayHeaders(),
+          "X-Goog-FieldMask": "location,formattedAddress,displayName",
+        },
+      },
+    );
     if (!response.ok) await readError(response);
     const json = (await response.json()) as {
       location?: { latitude: number; longitude: number };

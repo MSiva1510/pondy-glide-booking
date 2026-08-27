@@ -63,7 +63,11 @@ export function IosSelect({
           </DrawerHeader>
         ) : null}
         <div className="mx-auto w-full max-w-sm px-4 pb-8 pt-1">
-          <ul role="listbox" aria-label={title} className="overflow-hidden rounded-2xl bg-secondary">
+          <ul
+            role="listbox"
+            aria-label={title}
+            className="overflow-hidden rounded-2xl bg-secondary"
+          >
             {options.map((o, i) => {
               const active = o.value === value;
               return (
