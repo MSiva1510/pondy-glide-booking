@@ -13,6 +13,15 @@ import { WheelPicker, type WheelOption } from "@/components/ui/wheel-picker";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+// Release focus from any text input before the bottom sheet opens, so the
+// drawer never repositions around an on-screen keyboard (blank/cut-off sheet).
+function blurActiveInput() {
+  const el = document.activeElement;
+  if (el instanceof HTMLElement && el.matches("input, textarea, select, [contenteditable]")) {
+    el.blur();
+  }
+}
+
 const pad = (n: number) => String(n).padStart(2, "0");
 const range = (from: number, to: number): WheelOption[] =>
   Array.from({ length: to - from + 1 }, (_, i) => ({
@@ -74,6 +83,7 @@ export function DateField({
         <button
           id={id}
           type="button"
+          onPointerDown={blurActiveInput}
           className="flex h-11 w-full items-center justify-between rounded-xl border border-input bg-background px-3 text-left text-sm"
         >
           <span className={value ? "font-medium" : "text-muted-foreground"}>{display}</span>
@@ -163,6 +173,7 @@ export function TimeField({
         <button
           id={id}
           type="button"
+          onPointerDown={blurActiveInput}
           className="flex h-11 w-full items-center justify-between rounded-xl border border-input bg-background px-3 text-left text-sm"
         >
           <span className={value ? "font-medium" : "text-muted-foreground"}>{display}</span>
