@@ -9,8 +9,8 @@ export const brand = {
   city: "Pondicherry",
   state: "Puducherry",
   // Add a full street address here later; it is optional everywhere in the UI.
-  address: "",
-  mapEmbedUrl: "",
+  address: "Pondicherry, Puducherry",
+  mapEmbedUrl: `https://www.google.com/maps/embed/v1/place?key=${import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"]}&q=Sri+Jayam+Travels,+Pondicherry&center=11.8936644,79.8052108&zoom=16`,
   siteUrl: "https://pondicherry-cabs.lovable.app",
 } as const;
 
