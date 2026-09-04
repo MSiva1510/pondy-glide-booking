@@ -27,18 +27,18 @@ export const pricingTiers: PricingTier[] = [
     subtitle: "Kia Carens (6+1) · City tour",
     price: "₹5,000",
     unit: "8 hrs package",
-    includes: ["4 hrs ₹2,500 · 3 hrs ₹1,800", "Extra hour ₹700", "Spacious premium SUV"],
+    includes: ["Full-day city tour", "Extra hour ₹700", "Spacious premium SUV"],
   },
   {
     id: "day-rental",
     title: "Full Day Rental",
-    subtitle: "250 km · 12 hrs per day",
-    price: "₹4,500",
+    subtitle: "Car with driver · per day",
+    price: "On Request",
     unit: "per day",
     includes: [
-      "Rent ₹1,700 + driver bata ₹300",
-      "250 km × ₹10 included",
-      "Extra km ₹15 · tolls & parking extra",
+      "Priced according to the visiting areas",
+      "Share your itinerary for an exact quote",
+      "Tolls & parking extra",
     ],
   },
   {
@@ -94,11 +94,7 @@ export const sightseeingPackages: SightseeingPackage[] = [
   {
     vehicle: "Kia Carens",
     seats: "6+1 · Premium SUV",
-    tiers: [
-      { hours: "8 Hrs Package", price: 5000 },
-      { hours: "4 Hrs Package", price: 2500 },
-      { hours: "3 Hrs Package", price: 1800 },
-    ],
+    tiers: [{ hours: "8 Hrs Package", price: 5000 }],
     extraHour: 700,
   },
 ];

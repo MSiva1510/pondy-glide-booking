@@ -19,12 +19,6 @@ export const services: ServiceItem[] = [
     icon: "Plane",
   },
   {
-    slug: "one-way-taxi",
-    title: "One Way Taxi",
-    description: "Convenient one-way intercity travel without paying for the return.",
-    icon: "MoveRight",
-  },
-  {
     slug: "round-trip",
     title: "Round Trip",
     description: "Flexible return journeys with the same vehicle and driver.",
@@ -35,12 +29,6 @@ export const services: ServiceItem[] = [
     title: "Outstation Cab",
     description: "Travel from Pondicherry to destinations across South India.",
     icon: "Route",
-  },
-  {
-    slug: "sightseeing",
-    title: "Pondicherry Sightseeing",
-    description: "Explore White Town, the beaches, Auroville and nearby attractions.",
-    icon: "Camera",
   },
   {
     slug: "car-rental",
@@ -59,10 +47,8 @@ export const services: ServiceItem[] = [
 export const serviceToTripType: Record<string, "ONE_WAY" | "ROUND_TRIP" | "LOCAL" | "AIRPORT"> = {
   "local-cab": "LOCAL",
   "airport-transfer": "AIRPORT",
-  "one-way-taxi": "ONE_WAY",
   "round-trip": "ROUND_TRIP",
   "outstation-cab": "ONE_WAY",
-  sightseeing: "LOCAL",
   "car-rental": "LOCAL",
   "corporate-travel": "LOCAL",
 };

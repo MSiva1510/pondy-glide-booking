@@ -57,15 +57,6 @@ export const popularRoutes: PopularRoute[] = [
     fare: 3000,
   },
   {
-    id: "pichavaram",
-    from: "Pondicherry",
-    to: "Pichavaram",
-    distanceKm: 75,
-    approxHours: "1h 45m",
-    types: ["Round Trip"],
-    fare: 3000,
-  },
-  {
     id: "thanjavur",
     from: "Pondicherry",
     to: "Thanjavur",
