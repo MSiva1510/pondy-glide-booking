@@ -92,4 +92,22 @@ export const popularRoutes: PopularRoute[] = [
     types: ["One Way", "Round Trip"],
     fare: 9500,
   },
+  {
+    id: "kumbakonam",
+    from: "Pondicherry",
+    to: "Kumbakonam",
+    distanceKm: 120,
+    approxHours: "3h",
+    types: ["One Way", "Round Trip"],
+    fare: 4000,
+  },
+  {
+    id: "trichy",
+    from: "Pondicherry",
+    to: "Trichy",
+    distanceKm: 200,
+    approxHours: "4h 30m",
+    types: ["One Way", "Round Trip"],
+    fare: 6500,
+  },
 ];

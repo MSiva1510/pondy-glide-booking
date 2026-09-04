@@ -82,6 +82,16 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           ) : null}
           <li>{vehicle.transmission}</li>
         </ul>
+        <ul className="mt-3 flex flex-wrap gap-1.5">
+          {vehicle.features.map((f) => (
+            <li
+              key={f}
+              className="rounded-full bg-surface px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+            >
+              {f}
+            </li>
+          ))}
+        </ul>
         <p className="mt-3 text-[11px] text-muted-foreground">
           Availability depends on date and booking request.
         </p>
