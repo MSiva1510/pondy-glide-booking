@@ -30,7 +30,7 @@ export const vehicles: Vehicle[] = [
     transmission: "Manual",
     image: carSuv,
     features: ["Extra legroom", "19 km per litre", "Great for families", "Air conditioned"],
-    basePricePerKm: 18,
+    basePricePerKm: 19,
     localStartingPrice: 1800,
     active: true,
   },
