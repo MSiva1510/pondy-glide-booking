@@ -9,8 +9,13 @@ export interface PricingTier {
   includes: string[];
 }
 
-export const pricingDisclaimer =
+export let pricingDisclaimer =
   "Rates shown are for the Swift Dzire (4+1) unless mentioned. Kia Carens (6+1) and Toyota Innova (7) are available at ₹1,500 above the base package price. Final fare may vary depending on route, distance, waiting time, tolls, parking, permits and trip requirements.";
+
+/** Used by the admin area to override the disclaimer text. */
+export function setPricingDisclaimer(text: string) {
+  pricingDisclaimer = text;
+}
 
 export const pricingTiers: PricingTier[] = [
   {

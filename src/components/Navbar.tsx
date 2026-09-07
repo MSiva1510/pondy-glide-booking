@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, MessageCircle, Phone, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { brand, callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 
 const navLinks = [
@@ -75,7 +75,7 @@ export function Navbar() {
             className="rounded-full"
             aria-label={`Call ${brand.phoneDisplay}`}
           >
-            <a href={callHref}>
+            <a href={brand.callHref}>
               <Phone className="size-5" aria-hidden="true" />
             </a>
           </Button>

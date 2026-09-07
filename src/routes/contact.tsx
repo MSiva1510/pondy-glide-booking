@@ -3,7 +3,7 @@ import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/sections/Section";
 import { ContactForm } from "@/components/ContactForm";
-import { brand, callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 import paymentQr from "@/assets/payment-qr.png.asset.json";
 
@@ -36,7 +36,7 @@ function ContactPage() {
         <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="space-y-4">
             <a
-              href={callHref}
+              href={brand.callHref}
               className="flex items-start gap-3 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-aqua"
             >
               <Phone className="mt-0.5 size-5 text-aqua" aria-hidden="true" />

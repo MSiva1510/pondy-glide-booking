@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { services } from "@/data/services";
 import { isValidIndianMobile } from "@/lib/booking-validation";
 import { whatsAppHref } from "@/lib/whatsapp";
-import { callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 
 type ContactErrors = Partial<Record<"name" | "phone" | "email" | "message", string>>;
 
@@ -123,7 +123,7 @@ export function ContactForm() {
           </a>
         </Button>
         <Button asChild type="button" variant="ghost" className="rounded-xl">
-          <a href={callHref}>
+          <a href={brand.callHref}>
             <Phone className="size-4" aria-hidden="true" /> Call Now
           </a>
         </Button>

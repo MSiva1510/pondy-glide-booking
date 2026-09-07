@@ -25,7 +25,7 @@ import { DateField, TimeField } from "@/components/booking/DateTimeField";
 import { IosSelect } from "@/components/ui/ios-select";
 
 import { whatsAppHref } from "@/lib/whatsapp";
-import { brand, callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 import { TRIP_TYPE_LABELS, type Booking, type TripType } from "@/types";
 
 export interface BookingFlowInitial {
@@ -450,7 +450,7 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               </a>
             </Button>
             <Button asChild variant="outline" className="rounded-xl">
-              <a href={callHref}>
+              <a href={brand.callHref}>
                 <Phone className="size-4" aria-hidden="true" /> Call {brand.phoneDisplay}
               </a>
             </Button>

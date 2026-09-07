@@ -16,6 +16,8 @@ import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp, MobileActionBar } from "@/components/FloatingActions";
 import { Toaster } from "@/components/ui/sonner";
 import { brand } from "@/config/brand";
+import { applySiteSettings, emptyPublicSettings, type PublicSiteSettings } from "@/lib/site-settings";
+import { getPublicSettings } from "@/lib/settings.functions";
 
 function NotFoundComponent() {
   return (
@@ -78,11 +80,40 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  loader: async (): Promise<PublicSiteSettings> => {
+    try {
+      const settings = await getPublicSettings();
+      applySiteSettings(settings);
+      return settings;
+    } catch {
+      return emptyPublicSettings;
+    }
+  },
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: `${brand.brandName} | Pondicherry Cab, Taxi & Car Rental` },
+      {
+        title:
+          loaderData?.seo?.defaultTitle ||
+          `${brand.brandName} | Pondicherry Cab, Taxi & Car Rental`,
+      },
+      ...(loaderData?.seo?.defaultDescription
+        ? [{ name: "description", content: loaderData.seo.defaultDescription }]
+        : []),
+      ...(loaderData?.seo?.keywords
+        ? [{ name: "keywords", content: loaderData.seo.keywords }]
+        : []),
+      ...(loaderData?.seo?.ogImage
+        ? [
+            { property: "og:image", content: loaderData.seo.ogImage },
+            { name: "twitter:image", content: loaderData.seo.ogImage },
+          ]
+        : []),
+      ...(loaderData?.seo?.googleSiteVerification
+        ? [{ name: "google-site-verification", content: loaderData.seo.googleSiteVerification }]
+        : []),
+      ...(loaderData?.seo?.noIndex ? [{ name: "robots", content: "noindex, nofollow" }] : []),
 
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: brand.brandName },
@@ -99,7 +130,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "icon", href: brand.faviconUrl || "/favicon.png", type: "image/png" },
     ],
     scripts: [
       {
@@ -145,6 +176,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const settings = Route.useLoaderData();
+  applySiteSettings(settings);
 
   return (
     <QueryClientProvider client={queryClient}>

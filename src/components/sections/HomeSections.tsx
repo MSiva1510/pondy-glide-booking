@@ -26,7 +26,7 @@ import { pricingDisclaimer, pricingTiers } from "@/data/pricing";
 import { popularRoutes } from "@/data/routes";
 import { places } from "@/data/places";
 import { testimonials } from "@/data/testimonials";
-import { brand, callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 import driverImg from "@/assets/driver.jpg";
 import routesBanner from "@/assets/routes-banner.jpg";
@@ -367,7 +367,7 @@ export function FinalCTA() {
             variant="ghost"
             className="h-12 rounded-full px-7 text-ocean-foreground hover:bg-white/15 hover:text-ocean-foreground"
           >
-            <a href={callHref}>
+            <a href={brand.callHref}>
               <Phone className="size-4" aria-hidden="true" /> {brand.phoneDisplay}
             </a>
           </Button>
