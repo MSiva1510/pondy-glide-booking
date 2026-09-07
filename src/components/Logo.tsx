@@ -6,7 +6,7 @@ export function Logo({ variant = "dark" }: { variant?: "dark" | "light" }) {
   return (
     <Link to="/" className="flex items-center gap-2.5" aria-label={`${brand.brandName} home`}>
       <img
-        src={logoAsset.url}
+        src={brand.logoUrl || logoAsset.url}
         alt={`${brand.brandName} logo`}
         className="h-10 w-auto shrink-0 sm:h-12"
         width={120}
