@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { CalendarCheck, MessageCircle, Phone } from "lucide-react";
-import { brand, callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 
 export function FloatingWhatsApp() {
@@ -26,7 +26,7 @@ export function MobileActionBar() {
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl sm:hidden">
       <div className="grid grid-cols-3">
         <a
-          href={callHref}
+          href={brand.callHref}
           className="flex flex-col items-center gap-1 py-3 text-xs font-medium text-foreground"
           aria-label={`Call ${brand.phoneDisplay}`}
         >

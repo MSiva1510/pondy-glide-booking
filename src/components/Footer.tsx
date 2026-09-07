@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, MessageCircle, Phone } from "lucide-react";
-import { brand, callHref } from "@/config/brand";
+import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { services } from "@/data/services";
 
@@ -58,7 +58,7 @@ export function Footer() {
           <ul className="mt-4 space-y-3 text-sm text-primary-foreground/75">
             <li>
               <a
-                href={callHref}
+                href={brand.callHref}
                 className="flex items-center gap-2 transition-colors hover:text-accent"
               >
                 <Phone className="size-4" aria-hidden="true" /> {brand.phoneDisplay}
