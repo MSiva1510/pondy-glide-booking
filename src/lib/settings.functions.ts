@@ -53,8 +53,12 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   }
 });
 
-async function assertAdmin(context: { supabase: ReturnType<typeof createClient>; userId: string }) {
-  const { data, error } = await context.supabase.rpc("has_role", {
+type RpcClient = {
+  rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;
+};
+
+async function assertAdmin(context: { supabase: unknown; userId: string }) {
+  const { data, error } = await (context.supabase as RpcClient).rpc("has_role", {
     _user_id: context.userId,
     _role: "admin",
   });
@@ -72,7 +76,7 @@ export const getAllSettings = createServerFn({ method: "GET" })
     const map = new Map(rows.map((r) => [r.key, r.value]));
     return {
       public: toSettings(rows),
-      bookingApi: ((map.get("booking_api") as BookingApiSettings) ?? {
+      bookingApi: ((map.get("booking_api") as unknown as BookingApiSettings) ?? {
         enabled: false,
       }) as BookingApiSettings,
     };
@@ -152,7 +156,7 @@ async function loadBookingApi(): Promise<BookingApiSettings> {
     .select("value")
     .eq("key", "booking_api")
     .maybeSingle();
-  return ((data?.value as BookingApiSettings) ?? { enabled: false }) as BookingApiSettings;
+  return ((data?.value as unknown as BookingApiSettings) ?? { enabled: false }) as BookingApiSettings;
 }
 
 async function postToBookingApi(config: BookingApiSettings, payload: unknown) {
