@@ -512,7 +512,14 @@ function AdminPage() {
                     ...c,
                     pricingTiers: [
                       ...(c.pricingTiers ?? []),
-                      { title: "New package", price: "₹0", includes: [] } as PricingTier,
+                      {
+                        id: `tier-${Date.now()}`,
+                        title: "New package",
+                        subtitle: "",
+                        price: "₹0",
+                        unit: "",
+                        includes: [],
+                      } as PricingTier,
                     ],
                   }))
                 }
@@ -550,18 +557,15 @@ function AdminPage() {
                       }
                     />
                   </Field>
-                  <Field label="Rating (1-5)">
+                  <Field label="Trip">
                     <Input
-                      type="number"
-                      min={1}
-                      max={5}
                       className="rounded-xl"
-                      value={t.rating}
+                      value={t.trip}
                       onChange={(e) =>
                         setContent((c) => ({
                           ...c,
                           testimonials: (c.testimonials ?? []).map((x, idx) =>
-                            idx === i ? { ...x, rating: Number(e.target.value) } : x,
+                            idx === i ? { ...x, trip: e.target.value } : x,
                           ),
                         }))
                       }
@@ -572,12 +576,12 @@ function AdminPage() {
                   <Textarea
                     rows={3}
                     className="rounded-xl"
-                    value={t.text}
+                    value={t.quote}
                     onChange={(e) =>
                       setContent((c) => ({
                         ...c,
                         testimonials: (c.testimonials ?? []).map((x, idx) =>
-                          idx === i ? { ...x, text: e.target.value } : x,
+                          idx === i ? { ...x, quote: e.target.value } : x,
                         ),
                       }))
                     }
@@ -611,8 +615,8 @@ function AdminPage() {
                         ...(defaults.testimonials[0] as Testimonial),
                         id: `review-${Date.now()}`,
                         name: "New customer",
-                        text: "",
-                        rating: 5,
+                        quote: "",
+                        trip: "",
                       },
                     ],
                   }))
@@ -831,8 +835,7 @@ function AdminPage() {
                 }
                 const { error } = await supabase.auth.updateUser({
                   password: newPassword,
-                  // @ts-expect-error current_password is supported by Lovable Cloud auth
-                  current_password: currentPassword,
+                  ...({ current_password: currentPassword } as Record<string, string>),
                 });
                 if (error) toast.error(error.message);
                 else {

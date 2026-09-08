@@ -93,6 +93,9 @@ export function Footer() {
             <Link to="/terms" className="hover:text-accent">
               Terms & Conditions
             </Link>
+            <Link to="/auth" className="opacity-50 hover:text-accent hover:opacity-100">
+              Owner
+            </Link>
           </div>
         </div>
       </div>
