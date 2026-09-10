@@ -1,7 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Eye, EyeOff, Lock, Mail, ShieldCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  Car,
+  Eye,
+  EyeOff,
+  IndianRupee,
+  Loader2,
+  Lock,
+  Mail,
+  ShieldCheck,
+  Webhook,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +39,12 @@ export const Route = createFileRoute("/auth")({
   }),
   component: AuthPage,
 });
+
+const features = [
+  { icon: ShieldCheck, text: "Private owner access only" },
+  { icon: IndianRupee, text: "Change prices, cars & routes instantly" },
+  { icon: Webhook, text: "Connect your own booking app" },
+];
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -83,7 +100,7 @@ function AuthPage() {
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-surface">
-      {/* ambient brand glow */}
+      {/* ambient glows */}
       <div
         aria-hidden
         className="gradient-hero pointer-events-none absolute -top-40 left-1/2 h-[26rem] w-[46rem] -translate-x-1/2 rounded-full opacity-20 blur-3xl"
@@ -93,45 +110,64 @@ function AuthPage() {
         className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-teal/25 blur-3xl"
       />
 
-      <div className="relative mx-auto grid w-full max-w-6xl gap-10 px-4 py-10 lg:min-h-[100dvh] lg:grid-cols-2 lg:items-center lg:gap-16 lg:py-16">
+      <div className="relative mx-auto grid w-full max-w-6xl gap-8 px-4 py-8 sm:py-12 lg:min-h-[100dvh] lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14 lg:py-16">
         {/* Brand panel */}
-        <section className="gradient-hero shadow-float relative hidden overflow-hidden rounded-3xl p-10 text-ocean-foreground lg:block">
+        <section className="gradient-hero shadow-float relative hidden overflow-hidden rounded-[2rem] p-10 text-ocean-foreground lg:block">
+          {/* decorative rings */}
           <div
             aria-hidden
-            className="absolute -right-16 -top-16 h-64 w-64 rounded-full border border-white/20"
+            className="absolute -right-20 -top-20 h-72 w-72 rounded-full border border-white/15"
           />
           <div
             aria-hidden
-            className="absolute -bottom-24 -left-10 h-72 w-72 rounded-full border border-white/10"
+            className="absolute -right-8 -top-8 h-40 w-40 rounded-full border border-white/10"
           />
-          <img
-            src={brand.logoUrl || logoAsset.url}
-            alt={`${brand.brandName} logo`}
-            className="h-14 w-auto"
-            width={140}
-            height={56}
+          <div
+            aria-hidden
+            className="absolute -bottom-28 -left-12 h-80 w-80 rounded-full border border-white/10"
           />
-          <h2 className="mt-10 text-3xl font-bold leading-tight tracking-tight">
+
+          <span className="inline-flex items-center justify-center rounded-2xl bg-white p-2 shadow-lg">
+            <img
+              src={brand.logoUrl || logoAsset.url}
+              alt={`${brand.brandName} logo`}
+              className="h-12 w-auto"
+              width={120}
+              height={48}
+            />
+          </span>
+
+          <h2 className="mt-12 text-[2.1rem] font-bold leading-[1.15] tracking-tight">
             The control room for
             <br />
             {brand.brandName}
           </h2>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-ocean-foreground/80">
-            Update your brand, prices, cars, routes and booking connection — everything visitors see
-            on {brand.city}&apos;s premium cab website.
+          <span aria-hidden className="mt-5 block h-1 w-14 rounded-full bg-accent" />
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-ocean-foreground/80">
+            Update your brand, prices, cars, routes and booking connection — everything visitors
+            see on {brand.city}&apos;s premium cab website.
           </p>
-          <ul className="mt-10 space-y-3 text-sm text-ocean-foreground/85">
-            {["Private owner access only", "Change prices & packages instantly", "Connect your own booking app"].map(
-              (item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                  </span>
-                  {item}
-                </li>
-              ),
-            )}
+
+          <ul className="mt-10 space-y-3.5 text-sm text-ocean-foreground/90">
+            {features.map(({ icon: Icon, text }) => (
+              <li key={text} className="flex items-center gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
+                  <Icon className="h-4 w-4" />
+                </span>
+                {text}
+              </li>
+            ))}
           </ul>
+
+          <div className="mt-12 flex items-center gap-3 rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15">
+              <Car className="h-5 w-5" />
+            </span>
+            <p className="text-xs leading-relaxed text-ocean-foreground/75">
+              Serving travellers across {brand.city} and South India — local rides, airport
+              transfers and outstation journeys.
+            </p>
+          </div>
         </section>
 
         {/* Form panel */}
@@ -144,19 +180,24 @@ function AuthPage() {
             Back to website
           </Link>
 
-          <div className="shadow-card rounded-3xl border border-border bg-card p-6 sm:p-8">
-            <div className="flex items-center gap-3 lg:hidden">
-              <img
-                src={brand.logoUrl || logoAsset.url}
-                alt={`${brand.brandName} logo`}
-                className="h-11 w-auto"
-                width={110}
-                height={44}
-              />
+          <div className="shadow-card relative overflow-hidden rounded-[1.75rem] border border-border bg-card p-6 sm:p-9">
+            {/* gold accent line */}
+            <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-accent" />
+
+            <div className="flex flex-col items-center gap-3 text-center lg:hidden">
+              <span className="inline-flex items-center justify-center rounded-2xl border border-border bg-white p-2 shadow-sm">
+                <img
+                  src={brand.logoUrl || logoAsset.url}
+                  alt={`${brand.brandName} logo`}
+                  className="h-11 w-auto"
+                  width={110}
+                  height={44}
+                />
+              </span>
               <span className="text-sm font-semibold text-primary">{brand.brandName}</span>
             </div>
 
-            <span className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-secondary-foreground lg:mt-0">
+            <span className="mt-7 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-secondary-foreground lg:mt-0">
               <Lock className="h-3 w-3" />
               Private area
             </span>
@@ -221,13 +262,18 @@ function AuthPage() {
                 className="h-12 w-full rounded-2xl text-base font-semibold"
                 disabled={busy || mode === "loading"}
               >
-                {busy
-                  ? "Please wait…"
-                  : mode === "loading"
-                    ? "Loading…"
-                    : mode === "setup"
-                      ? "Create account & sign in"
-                      : "Sign in"}
+                {busy ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Please wait…
+                  </span>
+                ) : mode === "loading" ? (
+                  "Loading…"
+                ) : mode === "setup" ? (
+                  "Create account & sign in"
+                ) : (
+                  "Sign in"
+                )}
               </Button>
             </form>
 
@@ -236,6 +282,10 @@ function AuthPage() {
               Secure, encrypted sign-in
             </p>
           </div>
+
+          <p className="mt-5 text-center text-xs text-muted-foreground">
+            This page is hidden from search engines and meant for the owner only.
+          </p>
         </section>
       </div>
     </div>
