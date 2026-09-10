@@ -3,13 +3,25 @@ import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { services } from "@/data/services";
+import logoAsset from "@/assets/logo-sri-jayam.png.asset.json";
 
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="text-lg font-bold">{brand.brandName}</p>
+          <div className="flex items-center gap-3">
+            <span className="flex shrink-0 items-center justify-center rounded-2xl bg-white p-1.5 shadow-md">
+              <img
+                src={brand.logoUrl || logoAsset.url}
+                alt={`${brand.brandName} logo`}
+                className="h-10 w-auto"
+                width={100}
+                height={40}
+              />
+            </span>
+            <p className="text-lg font-bold leading-tight">{brand.brandName}</p>
+          </div>
           <p className="mt-3 max-w-xs text-sm text-primary-foreground/70">
             A {brand.city}-based cab, taxi and car rental service for local rides, airport
             transfers, sightseeing and outstation journeys across South India.

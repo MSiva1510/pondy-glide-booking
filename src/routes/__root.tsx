@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -178,19 +179,26 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const settings = Route.useLoaderData();
   applySiteSettings(settings);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Private owner screens (sign-in & admin) render without the public site chrome.
+  const isPrivateScreen = pathname === "/auth" || pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
-        <Navbar />
-        <main className="flex-1 pb-16 sm:pb-0">
+        {!isPrivateScreen && <Navbar />}
+        <main className={`flex-1 ${isPrivateScreen ? "" : "pb-16 sm:pb-0"}`}>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
-        <Footer />
+        {!isPrivateScreen && <Footer />}
       </div>
-      <FloatingWhatsApp />
-      <MobileActionBar />
+      {!isPrivateScreen && (
+        <>
+          <FloatingWhatsApp />
+          <MobileActionBar />
+        </>
+      )}
       <Toaster position="top-center" />
     </QueryClientProvider>
   );
