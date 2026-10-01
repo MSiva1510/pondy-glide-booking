@@ -67,7 +67,7 @@ export function HeroSlider() {
       <div className="relative mx-auto grid max-w-7xl gap-8 px-4 pb-16 pt-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:pb-24 lg:pt-20">
         <div key={index} className="animate-fade-up max-w-xl text-ocean-foreground">
           <p className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider backdrop-blur">
-            Pondicherry • Puducherry
+            Puducherry
           </p>
           <h1 className="mt-4 text-4xl font-bold leading-[1.08] sm:text-5xl lg:text-6xl">
             {slide.title}

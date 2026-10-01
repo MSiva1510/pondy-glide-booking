@@ -337,13 +337,15 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
               />
             </Field>
             <Field id="bf-pax" label="Passengers">
-              <Input
+              <IosSelect
                 id="bf-pax"
-                type="number"
-                min={1}
-                max={20}
+                title="Passengers"
                 value={form.passengers}
-                onChange={(e) => set("passengers", e.target.value)}
+                onChange={(value) => set("passengers", value)}
+                options={Array.from({ length: 8 }, (_, index) => ({
+                  value: String(index + 1),
+                  label: `${index + 1} ${index === 0 ? "passenger" : "passengers"}`,
+                }))}
               />
             </Field>
             <div className="sm:col-span-2">

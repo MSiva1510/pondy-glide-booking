@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { MessageCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,14 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
     phone: "",
   });
   const [errors, setErrors] = useState<FieldErrors>({});
+  const stripRef = useRef<HTMLDivElement>(null);
+  const drag = useRef({ active: false, startX: 0, startScroll: 0, moved: false });
+  const [dragging, setDragging] = useState(false);
+
+  const endDrag = () => {
+    drag.current.active = false;
+    setDragging(false);
+  };
 
   const set =
     (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -51,9 +59,36 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
     >
       <div className="relative">
         <div
-          className="no-scrollbar -mx-1 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto rounded-2xl bg-secondary p-2 sm:rounded-full"
+          ref={stripRef}
+          className={`no-scrollbar -mx-1 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto rounded-2xl bg-secondary p-2 select-none sm:rounded-full ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
           role="tablist"
           aria-label="Trip type"
+          onMouseDown={(event) => {
+            if (event.button !== 0) return;
+            drag.current = {
+              active: true,
+              startX: event.clientX,
+              startScroll: stripRef.current?.scrollLeft ?? 0,
+              moved: false,
+            };
+            event.preventDefault();
+          }}
+          onMouseMove={(event) => {
+            if (!drag.current.active || !stripRef.current) return;
+            const delta = event.clientX - drag.current.startX;
+            if (Math.abs(delta) > 5) {
+              drag.current.moved = true;
+              setDragging(true);
+              stripRef.current.scrollLeft = drag.current.startScroll - delta;
+            }
+          }}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          onClickCapture={(event) => {
+            if (!drag.current.moved) return;
+            event.stopPropagation();
+            drag.current.moved = false;
+          }}
         >
           {tabs.map((t) => (
             <button
@@ -63,7 +98,7 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
               aria-pressed={tripType === t}
               role="tab"
               aria-selected={tripType === t}
-              className={`w-[42%] shrink-0 snap-center rounded-full px-3 py-2.5 text-sm font-semibold transition-colors sm:w-auto sm:flex-1 ${
+              className={`w-[42%] shrink-0 snap-center rounded-full px-3 py-2.5 text-sm font-semibold transition-colors ${
                 tripType === t
                   ? "bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%] text-white shadow-card"
                   : "text-muted-foreground hover:text-primary"
@@ -130,14 +165,15 @@ export function BookingWidget({ compact = false }: { compact?: boolean }) {
           <Label htmlFor="bw-passengers" className="text-xs font-semibold text-muted-foreground">
             Passengers
           </Label>
-          <Input
+          <IosSelect
             id="bw-passengers"
-            type="number"
-            min={1}
-            max={20}
-            className={field}
+            title="Passengers"
             value={form.passengers}
-            onChange={set("passengers")}
+            onChange={(value) => setForm((f) => ({ ...f, passengers: value }))}
+            options={Array.from({ length: 8 }, (_, index) => ({
+              value: String(index + 1),
+              label: `${index + 1} ${index === 0 ? "passenger" : "passengers"}`,
+            }))}
           />
         </div>
         <div>
