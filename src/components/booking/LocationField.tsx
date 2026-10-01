@@ -164,7 +164,7 @@ export function LocationField({
         </ul>
       ) : null}
 
-      <Drawer open={mapOpen} onOpenChange={setMapOpen}>
+      <Drawer open={mapOpen} onOpenChange={setMapOpen} handleOnly>
         <DrawerContent className="rounded-t-3xl">
           <DrawerHeader className="pb-2">
             <DrawerTitle className="text-center text-base">Pick location on map</DrawerTitle>
