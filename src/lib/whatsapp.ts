@@ -15,7 +15,7 @@ export interface WhatsAppTrip {
 }
 
 export function buildWhatsAppMessage(trip: WhatsAppTrip = {}): string {
-  const lines = ["Hello, I would like to book a cab.", ""];
+  const lines = ["Hello, I would like to book a cab."];
   const push = (label: string, value?: string | number) => {
     if (value !== undefined && value !== null && `${value}`.trim() !== "")
       lines.push(`${label}: ${value}`);
@@ -30,7 +30,7 @@ export function buildWhatsAppMessage(trip: WhatsAppTrip = {}): string {
   push("Passengers", trip.passengers);
   push("Vehicle", trip.vehicle);
   push("Note", trip.note);
-  lines.push("", "Please confirm availability and fare.");
+  lines.push("Please confirm availability and fare.");
   return lines.join("\n");
 }
 

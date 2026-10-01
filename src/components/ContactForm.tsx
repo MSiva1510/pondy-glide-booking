@@ -35,9 +35,9 @@ export function ContactForm() {
     // Enquiries are routed through WhatsApp until the fleet enquiry API is connected.
     window.open(
       whatsAppHref(
-        `Hello, I have an enquiry.\n\nName: ${form.name}\nPhone: ${form.phone}${form.email ? `\nEmail: ${form.email}` : ""}${
+        `Hello, I have an enquiry.\nName: ${form.name}\nPhone: ${form.phone}${form.email ? `\nEmail: ${form.email}` : ""}${
           form.service ? `\nService: ${form.service}` : ""
-        }\n\n${form.message}`,
+        }\n${form.message}`,
       ),
       "_blank",
       "noopener",
