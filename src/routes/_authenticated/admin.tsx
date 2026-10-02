@@ -32,6 +32,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "Website Settings" },
       { property: "og:description", content: "Private owner settings for the website." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AdminPage,
