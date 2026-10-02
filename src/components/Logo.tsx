@@ -1,12 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { brand } from "@/config/brand";
-import logoAsset from "@/assets/logo-sri-jayam.png.asset.json";
 
 export function Logo({ variant = "dark" }: { variant?: "dark" | "light" }) {
   return (
     <Link to="/" className="flex items-center gap-2.5" aria-label={`${brand.brandName} home`}>
       <img
-        src={brand.logoUrl || logoAsset.url}
+        src={brand.logoUrl || "/logo.png"}
         alt={`${brand.brandName} logo`}
         className="h-10 w-auto shrink-0 sm:h-12"
         width={120}
