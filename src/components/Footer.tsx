@@ -3,7 +3,6 @@ import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { brand } from "@/config/brand";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { services } from "@/data/services";
-import logoAsset from "@/assets/logo-sri-jayam.png.asset.json";
 
 export function Footer() {
   return (
@@ -13,7 +12,7 @@ export function Footer() {
           <div className="flex items-center gap-3">
             <span className="flex shrink-0 items-center justify-center rounded-2xl bg-white p-1.5 shadow-md">
               <img
-                src={brand.logoUrl || logoAsset.url}
+                src={brand.logoUrl || "/logo.png"}
                 alt={`${brand.brandName} logo`}
                 className="h-10 w-auto"
                 width={100}
