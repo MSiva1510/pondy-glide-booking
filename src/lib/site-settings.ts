@@ -79,7 +79,12 @@ export interface PublicSiteSettings {
 export const emptyPublicSettings: PublicSiteSettings = { brand: {}, seo: {}, content: {} };
 
 /** Current defaults, used to pre-fill the admin forms. */
-export function currentDefaults(): { vehicles: VehicleOverride[]; testimonials: Testimonial[]; routes: PopularRoute[]; pricingTiers: PricingTier[] } {
+export function currentDefaults(): {
+  vehicles: VehicleOverride[];
+  testimonials: Testimonial[];
+  routes: PopularRoute[];
+  pricingTiers: PricingTier[];
+} {
   return {
     vehicles: vehicles.map((v) => ({
       id: v.id,

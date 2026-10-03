@@ -43,7 +43,12 @@ export const vehicles: Vehicle[] = [
     ac: true,
     transmission: "Manual / Automatic",
     image: carInnova,
-    features: ["Spacious cabin", "22 km per litre", "Comfortable for long trips", "Air conditioned"],
+    features: [
+      "Spacious cabin",
+      "22 km per litre",
+      "Comfortable for long trips",
+      "Air conditioned",
+    ],
     basePricePerKm: 22,
     localStartingPrice: 2500,
     active: true,
