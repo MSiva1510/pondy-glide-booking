@@ -42,15 +42,21 @@ export async function getAllSettings() {
   const map = new Map(rows.map((r) => [r.key, r.value]));
   return {
     public: toSettings(rows),
-    bookingApi: ((map.get("booking_api") as BookingApiSettings) ?? { enabled: false }) as BookingApiSettings,
+    bookingApi: ((map.get("booking_api") as BookingApiSettings) ?? {
+      enabled: false,
+    }) as BookingApiSettings,
   };
 }
 
 export async function saveSetting(input: { key: string; value: unknown; isPublic: boolean }) {
-  if (!["brand", "seo", "content", "booking_api"].includes(input.key)) throw new Error("Unknown setting");
+  if (!["brand", "seo", "content", "booking_api"].includes(input.key))
+    throw new Error("Unknown setting");
   const { error } = await db
     .from("site_settings")
-    .upsert({ key: input.key, value: input.value, is_public: input.isPublic }, { onConflict: "key" });
+    .upsert(
+      { key: input.key, value: input.value, is_public: input.isPublic },
+      { onConflict: "key" },
+    );
   if (error) throw error;
   return { ok: true };
 }

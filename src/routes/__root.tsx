@@ -10,6 +10,7 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -18,7 +19,11 @@ import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp, MobileActionBar } from "@/components/FloatingActions";
 import { Toaster } from "@/components/ui/sonner";
 import { brand } from "@/config/brand";
-import { applySiteSettings, emptyPublicSettings, type PublicSiteSettings } from "@/lib/site-settings";
+import {
+  applySiteSettings,
+  emptyPublicSettings,
+  type PublicSiteSettings,
+} from "@/lib/site-settings";
 import { getPublicSettings } from "@/lib/settings.functions";
 
 function NotFoundComponent() {
@@ -47,7 +52,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error instanceof Error ? error : new Error(String(error)), { boundary: "tanstack_root_error_component" });
+    reportLovableError(error instanceof Error ? error : new Error(String(error)), {
+      boundary: "tanstack_root_error_component",
+    });
   }, [error]);
 
   return (
@@ -171,6 +178,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <SpeedInsights />
       </body>
     </html>
   );

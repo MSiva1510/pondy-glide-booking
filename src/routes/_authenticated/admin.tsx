@@ -57,7 +57,15 @@ function Field({
   );
 }
 
-function Card({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
+function Card({
+  title,
+  desc,
+  children,
+}: {
+  title: string;
+  desc?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       <h2 className="text-base font-semibold text-foreground">{title}</h2>
@@ -136,7 +144,9 @@ function AdminPage() {
   }
 
   if (loading) {
-    return <div className="mx-auto max-w-4xl px-4 py-16 text-sm text-muted-foreground">Loading…</div>;
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-16 text-sm text-muted-foreground">Loading…</div>
+    );
   }
 
   if (denied) {
@@ -195,7 +205,10 @@ function AdminPage() {
 
         {/* BUSINESS */}
         <TabsContent value="business" className="mt-6 space-y-5">
-          <Card title="Business details" desc="Name, phone numbers and address shown across the site.">
+          <Card
+            title="Business details"
+            desc="Name, phone numbers and address shown across the site."
+          >
             {(
               [
                 ["brandName", "Business name"],
@@ -211,7 +224,11 @@ function AdminPage() {
                 ["siteUrl", "Website address (https://…)"],
               ] as const
             ).map(([key, label]) => (
-              <Field key={key} label={label} hint={`Leave blank to use: ${brandDefaults[key] || "—"}`}>
+              <Field
+                key={key}
+                label={label}
+                hint={`Leave blank to use: ${brandDefaults[key] || "—"}`}
+              >
                 <Input
                   className="rounded-xl"
                   value={brandForm[key] ?? ""}
@@ -231,7 +248,10 @@ function AdminPage() {
 
         {/* SEO */}
         <TabsContent value="seo" className="mt-6 space-y-5">
-          <Card title="Search engine settings" desc="Titles and descriptions used by Google and social previews.">
+          <Card
+            title="Search engine settings"
+            desc="Titles and descriptions used by Google and social previews."
+          >
             <Field label="Home page title">
               <Input
                 className="rounded-xl"
@@ -292,7 +312,10 @@ function AdminPage() {
 
         {/* BRANDING */}
         <TabsContent value="branding" className="mt-6 space-y-5">
-          <Card title="Logo & icon" desc="Upload a small image (under 300 KB) or paste an image link.">
+          <Card
+            title="Logo & icon"
+            desc="Upload a small image (under 300 KB) or paste an image link."
+          >
             {(
               [
                 ["logoUrl", "Logo"],
@@ -434,7 +457,10 @@ function AdminPage() {
         <TabsContent value="prices" className="mt-6 space-y-5">
           <Card title="Packages & prices">
             {tierList.map((tier, i) => (
-              <div key={`${tier.title}-${i}`} className="space-y-3 rounded-xl border border-border p-3">
+              <div
+                key={`${tier.title}-${i}`}
+                className="space-y-3 rounded-xl border border-border p-3"
+              >
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Field label="Title">
                     <Input
@@ -641,7 +667,10 @@ function AdminPage() {
         <TabsContent value="routes" className="mt-6 space-y-5">
           <Card title="Popular routes">
             {routeList.map((r, i) => (
-              <div key={r.id ?? i} className="grid gap-3 rounded-xl border border-border p-3 sm:grid-cols-4">
+              <div
+                key={r.id ?? i}
+                className="grid gap-3 rounded-xl border border-border p-3 sm:grid-cols-4"
+              >
                 <Field label="From">
                   <Input
                     className="rounded-xl"
@@ -782,7 +811,9 @@ function AdminPage() {
                   type="password"
                   className="rounded-xl"
                   value={bookingApi.authHeaderValue ?? ""}
-                  onChange={(e) => setBookingApi((b) => ({ ...b, authHeaderValue: e.target.value }))}
+                  onChange={(e) =>
+                    setBookingApi((b) => ({ ...b, authHeaderValue: e.target.value }))
+                  }
                 />
               </Field>
             </div>
@@ -800,7 +831,10 @@ function AdminPage() {
                 onClick={async () => {
                   const result = await testBookingApi();
                   if (result.delivered) toast.success("Test booking delivered successfully.");
-                  else toast.error(`Test failed: ${("body" in result && result.body) || result.reason}`);
+                  else
+                    toast.error(
+                      `Test failed: ${("body" in result && result.body) || result.reason}`,
+                    );
                 }}
               >
                 Send test booking

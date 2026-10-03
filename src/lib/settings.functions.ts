@@ -13,7 +13,8 @@ type SettingRow = { key: string; value: unknown; is_public?: boolean };
 /** Server-side client for the owner's own database (publishable key, RLS applies). */
 function ownDb(accessToken?: string) {
   const url = process.env["FLEET_SUPABASE_URL"] ?? process.env["VITE_FLEET_SUPABASE_URL"]!;
-  const key = process.env["FLEET_SUPABASE_ANON_KEY"] ?? process.env["VITE_FLEET_SUPABASE_ANON_KEY"]!;
+  const key =
+    process.env["FLEET_SUPABASE_ANON_KEY"] ?? process.env["VITE_FLEET_SUPABASE_ANON_KEY"]!;
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: {
@@ -62,24 +63,26 @@ export const dispatchBooking = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const b = data.booking;
-    const { error } = await ownDb().from("bookings").insert({
-      reference: b.id,
-      customer_name: b.customerName.slice(0, 120),
-      phone: b.phone.slice(0, 20),
-      email: b.email ?? null,
-      pickup: b.pickup,
-      drop_location: b.drop || null,
-      trip_date: b.date || null,
-      trip_time: b.time || null,
-      return_date: b.returnDate ?? null,
-      trip_type: b.tripType,
-      vehicle_type: b.vehicleType || null,
-      passengers: Number(b.passengers) || 1,
-      special_request: b.specialRequest ?? null,
-      service_slug: b.serviceSlug ?? null,
-      status: "PENDING",
-      source: "PUBLIC_WEBSITE",
-    });
+    const { error } = await ownDb()
+      .from("bookings")
+      .insert({
+        reference: b.id,
+        customer_name: b.customerName.slice(0, 120),
+        phone: b.phone.slice(0, 20),
+        email: b.email ?? null,
+        pickup: b.pickup,
+        drop_location: b.drop || null,
+        trip_date: b.date || null,
+        trip_time: b.time || null,
+        return_date: b.returnDate ?? null,
+        trip_type: b.tripType,
+        vehicle_type: b.vehicleType || null,
+        passengers: Number(b.passengers) || 1,
+        special_request: b.specialRequest ?? null,
+        service_slug: b.serviceSlug ?? null,
+        status: "PENDING",
+        source: "PUBLIC_WEBSITE",
+      });
     if (error) {
       console.error("Booking save failed", error);
       return { ok: false, saved: false };
@@ -88,7 +91,8 @@ export const dispatchBooking = createServerFn({ method: "POST" })
   });
 
 async function postToBookingApi(config: BookingApiSettings, payload: unknown) {
-  if (!config.enabled || !config.url) return { delivered: false, reason: "not-configured" as const };
+  if (!config.enabled || !config.url)
+    return { delivered: false, reason: "not-configured" as const };
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (config.authHeaderName && config.authHeaderValue)
     headers[config.authHeaderName] = config.authHeaderValue;
@@ -134,7 +138,9 @@ export const testBookingApi = createServerFn({ method: "POST" })
         .select("value")
         .eq("key", "booking_api")
         .maybeSingle();
-      const config = ((row?.value as BookingApiSettings) ?? { enabled: false }) as BookingApiSettings;
+      const config = ((row?.value as BookingApiSettings) ?? {
+        enabled: false,
+      }) as BookingApiSettings;
       return await postToBookingApi(config, {
         event: "booking.test",
         booking: {
