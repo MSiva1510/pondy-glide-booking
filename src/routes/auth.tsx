@@ -80,6 +80,11 @@ function AuthPage() {
           toast.error(result.error ?? "Could not create the account.");
           return;
         }
+        if ("needsConfirmation" in result && result.needsConfirmation) {
+          toast.success("Account created. Check your email to confirm, then sign in.");
+          setMode("signin");
+          return;
+        }
         toast.success("Admin account created. Signing you in…");
       }
       const { error } = await supabase.auth.signInWithPassword({
