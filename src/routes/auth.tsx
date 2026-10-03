@@ -17,8 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
-import { adminExists, bootstrapAdmin } from "@/lib/settings.functions";
+import { db as supabase } from "@/integrations/fleet/client";
+import { adminExists, bootstrapAdmin } from "@/lib/owner-admin";
 import { brand } from "@/config/brand";
 import logoAsset from "@/assets/logo-sri-jayam.png.asset.json";
 
@@ -75,9 +75,14 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "setup") {
-        const result = await bootstrapAdmin({ data: { email: email.trim(), password } });
+        const result = await bootstrapAdmin({ email: email.trim(), password });
         if (!result.ok) {
           toast.error(result.error ?? "Could not create the account.");
+          return;
+        }
+        if ("needsConfirmation" in result && result.needsConfirmation) {
+          toast.success("Account created. Check your email to confirm, then sign in.");
+          setMode("signin");
           return;
         }
         toast.success("Admin account created. Signing you in…");

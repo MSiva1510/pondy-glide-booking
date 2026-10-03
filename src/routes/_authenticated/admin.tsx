@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
+import { db as supabase } from "@/integrations/fleet/client";
 import { brand, brandDefaults } from "@/config/brand";
 import {
   currentDefaults,
@@ -19,7 +19,7 @@ import {
   type SeoOverrides,
   type VehicleOverride,
 } from "@/lib/site-settings";
-import { getAllSettings, saveSetting, testBookingApi } from "@/lib/settings.functions";
+import { getAllSettings, saveSetting, testBookingApi } from "@/lib/owner-admin";
 import type { Testimonial } from "@/data/testimonials";
 import type { PopularRoute } from "@/data/routes";
 import type { PricingTier } from "@/data/pricing";
@@ -121,7 +121,7 @@ function AdminPage() {
   async function save(key: string, value: unknown, isPublic: boolean, message: string) {
     setSaving(true);
     try {
-      await saveSetting({ data: { key, value, isPublic } });
+      await saveSetting({ key, value, isPublic });
       toast.success(message);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not save.");

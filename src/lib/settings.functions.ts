@@ -1,8 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { ADMIN_EMAIL } from "@/lib/admin-config";
 import {
   emptyPublicSettings,
   type BookingApiSettings,
@@ -12,14 +10,17 @@ import type { BookingRequest } from "@/types";
 
 type SettingRow = { key: string; value: unknown; is_public?: boolean };
 
-function serverPublicClient() {
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-  return createClient(process.env["SUPABASE_URL"]!, key, {
+/** Server-side client for the owner's own database (publishable key, RLS applies). */
+function ownDb(accessToken?: string) {
+  const url = process.env["FLEET_SUPABASE_URL"] ?? process.env["VITE_FLEET_SUPABASE_URL"]!;
+  const key = process.env["FLEET_SUPABASE_ANON_KEY"] ?? process.env["VITE_FLEET_SUPABASE_ANON_KEY"]!;
+  return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: {
       fetch: (input: RequestInfo | URL, init?: RequestInit) => {
         const h = new Headers(init?.headers);
-        if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`)
+        if (accessToken) h.set("Authorization", `Bearer ${accessToken}`);
+        else if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`)
           h.delete("Authorization");
         h.set("apikey", key);
         return fetch(input, { ...init, headers: h });
@@ -28,7 +29,7 @@ function serverPublicClient() {
   });
 }
 
-function toSettings(rows: SettingRow[] | null): PublicSiteSettings {
+export function toSettings(rows: SettingRow[] | null): PublicSiteSettings {
   const map = new Map((rows ?? []).map((r) => [r.key, r.value]));
   return {
     brand: (map.get("brand") as PublicSiteSettings["brand"]) ?? {},
@@ -40,8 +41,7 @@ function toSettings(rows: SettingRow[] | null): PublicSiteSettings {
 /** Public: the settings that shape what visitors see. */
 export const getPublicSettings = createServerFn({ method: "GET" }).handler(async () => {
   try {
-    const supabase = serverPublicClient();
-    const { data, error } = await supabase
+    const { data, error } = await ownDb()
       .from("site_settings")
       .select("key, value")
       .eq("is_public", true);
@@ -53,111 +53,39 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   }
 });
 
-type RpcClient = {
-  rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;
-};
-
-async function assertAdmin(context: { supabase: unknown; userId: string }) {
-  const { data, error } = await (context.supabase as RpcClient).rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin",
-  });
-  if (error || !data) throw new Error("Forbidden");
-}
-
-/** Admin: every setting, including the private booking-system connection. */
-export const getAllSettings = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    await assertAdmin(context as never);
-    const { data, error } = await context.supabase.from("site_settings").select("key, value");
-    if (error) throw error;
-    const rows = data as SettingRow[];
-    const map = new Map(rows.map((r) => [r.key, r.value]));
-    return {
-      public: toSettings(rows),
-      bookingApi: ((map.get("booking_api") as unknown as BookingApiSettings) ?? {
-        enabled: false,
-      }) as BookingApiSettings,
-    };
-  });
-
-export const saveSetting = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input: { key: string; value: unknown; isPublic: boolean }) => {
-    const allowed = ["brand", "seo", "content", "booking_api"];
-    if (!allowed.includes(input.key)) throw new Error("Unknown setting");
-    return input;
-  })
-  .handler(async ({ data, context }) => {
-    await assertAdmin(context as never);
-    const { error } = await context.supabase
-      .from("site_settings")
-      .upsert(
-        { key: data.key, value: data.value as never, is_public: data.isPublic },
-        { onConflict: "key" },
-      );
-    if (error) throw error;
-    return { ok: true };
-  });
-
-/** One-time setup: creates the single admin account when none exists yet. */
-export const bootstrapAdmin = createServerFn({ method: "POST" })
-  .inputValidator((input: { email: string; password: string }) => {
-    if (!input?.email || !input?.password || input.password.length < 8)
-      throw new Error("A valid email and a password of at least 8 characters are required.");
+/** Public: saves a website booking request into the owner's own database. */
+export const dispatchBooking = createServerFn({ method: "POST" })
+  .inputValidator((input: { booking: BookingRequest & { id: string } }) => {
+    const b = input?.booking;
+    if (!b?.phone || !b.pickup || !b.customerName) throw new Error("Incomplete booking");
     return input;
   })
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { count, error: countError } = await supabaseAdmin
-      .from("user_roles")
-      .select("id", { count: "exact", head: true })
-      .eq("role", "admin");
-    if (countError) throw countError;
-    if ((count ?? 0) > 0) return { ok: false, error: "An admin account already exists." };
-
-    if (data.email.trim().toLowerCase() !== ADMIN_EMAIL)
-      return { ok: false, error: "This email address is not allowed to own the admin area." };
-
-    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
-      email: ADMIN_EMAIL,
-      password: data.password,
-      email_confirm: true,
+    const b = data.booking;
+    const { error } = await ownDb().from("bookings").insert({
+      reference: b.id,
+      customer_name: b.customerName.slice(0, 120),
+      phone: b.phone.slice(0, 20),
+      email: b.email ?? null,
+      pickup: b.pickup,
+      drop_location: b.drop || null,
+      trip_date: b.date || null,
+      trip_time: b.time || null,
+      return_date: b.returnDate ?? null,
+      trip_type: b.tripType,
+      vehicle_type: b.vehicleType || null,
+      passengers: Number(b.passengers) || 1,
+      special_request: b.specialRequest ?? null,
+      service_slug: b.serviceSlug ?? null,
+      status: "PENDING",
+      source: "PUBLIC_WEBSITE",
     });
-    if (error || !created.user) return { ok: false, error: error?.message ?? "Could not create the account." };
-
-    const { error: roleError } = await supabaseAdmin
-      .from("user_roles")
-      .insert({ user_id: created.user.id, role: "admin" });
-    if (roleError) return { ok: false, error: roleError.message };
-
-    return { ok: true };
+    if (error) {
+      console.error("Booking save failed", error);
+      return { ok: false, saved: false };
+    }
+    return { ok: true, saved: true };
   });
-
-/** Public: is the admin account set up yet? (used by the sign-in screen) */
-export const adminExists = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { count } = await supabaseAdmin
-      .from("user_roles")
-      .select("id", { count: "exact", head: true })
-      .eq("role", "admin");
-    return { exists: (count ?? 0) > 0 };
-  } catch {
-    return { exists: true };
-  }
-});
-
-async function loadBookingApi(): Promise<BookingApiSettings> {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data } = await supabaseAdmin
-    .from("site_settings")
-    .select("value")
-    .eq("key", "booking_api")
-    .maybeSingle();
-  return ((data?.value as unknown as BookingApiSettings) ?? { enabled: false }) as BookingApiSettings;
-}
 
 async function postToBookingApi(config: BookingApiSettings, payload: unknown) {
   if (!config.enabled || !config.url) return { delivered: false, reason: "not-configured" as const };
@@ -185,35 +113,29 @@ async function postToBookingApi(config: BookingApiSettings, payload: unknown) {
   };
 }
 
-/** Public: forwards a website booking request to the owner's own booking app. */
-export const dispatchBooking = createServerFn({ method: "POST" })
-  .inputValidator((input: { booking: BookingRequest & { id: string } }) => {
-    if (!input?.booking?.phone || !input.booking.pickup) throw new Error("Incomplete booking");
+/** Admin: sends a sample booking using the saved connection settings. */
+export const testBookingApi = createServerFn({ method: "POST" })
+  .inputValidator((input: { accessToken: string }) => {
+    if (!input?.accessToken) throw new Error("Unauthorized");
     return input;
   })
   .handler(async ({ data }) => {
+    const client = ownDb(data.accessToken);
+    const { data: userData, error: userError } = await client.auth.getUser(data.accessToken);
+    if (userError || !userData.user) throw new Error("Unauthorized");
+    const { data: isAdmin } = await client.rpc("has_role", {
+      _user_id: userData.user.id,
+      _role: "admin",
+    });
+    if (!isAdmin) throw new Error("Forbidden");
     try {
-      const config = await loadBookingApi();
-      const result = await postToBookingApi(config, {
-        event: "booking.created",
-        booking: data.booking,
-        receivedAt: new Date().toISOString(),
-      });
-      return { ok: true, delivered: result.delivered };
-    } catch (error) {
-      console.error("Booking dispatch failed", error);
-      return { ok: true, delivered: false };
-    }
-  });
-
-/** Admin: sends a sample booking so the owner can verify the connection. */
-export const testBookingApi = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    await assertAdmin(context as never);
-    try {
-      const config = await loadBookingApi();
-      const result = await postToBookingApi(config, {
+      const { data: row } = await client
+        .from("site_settings")
+        .select("value")
+        .eq("key", "booking_api")
+        .maybeSingle();
+      const config = ((row?.value as BookingApiSettings) ?? { enabled: false }) as BookingApiSettings;
+      return await postToBookingApi(config, {
         event: "booking.test",
         booking: {
           id: "TEST-0001",
@@ -230,7 +152,6 @@ export const testBookingApi = createServerFn({ method: "POST" })
         },
         receivedAt: new Date().toISOString(),
       });
-      return result;
     } catch (error) {
       return { delivered: false, reason: "error" as const, body: String(error).slice(0, 300) };
     }
