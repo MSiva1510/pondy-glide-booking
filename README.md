@@ -1261,36 +1261,29 @@ CUSTOMER WEBSITE
 
     ↓
 
-
 Create Booking
 
     ↓
-
 
 FLEET MANAGEMENT API
 
     ↓
 
-
 Booking Created
 
     ↓
-
 
 Manager Dashboard
 
     ↓
 
-
 Vehicle Assignment
 
     ↓
 
-
 Driver Assignment
 
     ↓
-
 
 Trip
 
@@ -1474,12 +1467,9 @@ Competitor copy
 
 Think:
 
-Luxury travel website
-+
-Local Pondicherry identity
-+
-Simple cab booking
-+
+Luxury travel website +
+Local Pondicherry identity +
+Simple cab booking +
 Modern fleet technology
 
 38. FINAL NAVIGATION

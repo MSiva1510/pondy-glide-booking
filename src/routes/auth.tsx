@@ -149,8 +149,8 @@ function AuthPage() {
           </h2>
           <span aria-hidden className="mt-5 block h-1 w-14 rounded-full bg-accent" />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-ocean-foreground/80">
-            Update your brand, prices, cars, routes and booking connection — everything visitors
-            see on {brand.city}&apos;s premium cab website.
+            Update your brand, prices, cars, routes and booking connection — everything visitors see
+            on {brand.city}&apos;s premium cab website.
           </p>
 
           <ul className="mt-10 space-y-3.5 text-sm text-ocean-foreground/90">
