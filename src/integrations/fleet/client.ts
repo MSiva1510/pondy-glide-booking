@@ -22,5 +22,9 @@ function getClient(): SupabaseClient {
 }
 
 export const db: SupabaseClient = new Proxy({} as SupabaseClient, {
-  get: (_t, prop) => Reflect.get(getClient(), prop as keyof SupabaseClient),
+  get: (_t, prop) => {
+    const c = getClient();
+    const v = Reflect.get(c, prop) as unknown;
+    return typeof v === "function" ? (v as (...a: unknown[]) => unknown).bind(c) : v;
+  },
 });
