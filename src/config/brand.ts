@@ -30,7 +30,7 @@ const defaultBrand = {
   mapEmbedUrl: import.meta.env["VITE_GOOGLE_MAPS_BROWSER_KEY"]
     ? `https://www.google.com/maps/embed/v1/place?key=${import.meta.env["VITE_GOOGLE_MAPS_BROWSER_KEY"]}&q=Sri+Jayam+Travels,+Pondicherry&center=11.8936644,79.8052108&zoom=16`
     : "",
-  siteUrl: "",
+  siteUrl: "https://www.travelsjayam.in",
   logoUrl: "",
   faviconUrl: "",
 };

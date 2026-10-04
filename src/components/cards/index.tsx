@@ -20,7 +20,16 @@ import type { PricingTier } from "@/data/pricing";
 import type { Testimonial } from "@/data/testimonials";
 import type { Vehicle } from "@/types";
 
-const iconMap = { Car, Plane, MoveRight, Repeat, Route: RouteIcon, Camera, KeyRound, Briefcase };
+export const iconMap = {
+  Car,
+  Plane,
+  MoveRight,
+  Repeat,
+  Route: RouteIcon,
+  Camera,
+  KeyRound,
+  Briefcase,
+};
 
 export function ServiceCard({ service }: { service: ServiceItem }) {
   const Icon = iconMap[service.icon as keyof typeof iconMap] ?? Car;
