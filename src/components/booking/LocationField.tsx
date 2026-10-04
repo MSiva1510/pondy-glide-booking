@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Loader2, MapPin, Navigation, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +15,7 @@ import {
   getPlaceLocation,
   reverseGeocode,
   type PlaceSuggestion,
-} from "@/lib/places.functions";
+} from "@/lib/google-maps";
 
 export function LocationField({
   id,
@@ -29,9 +28,9 @@ export function LocationField({
   onChange: (v: string) => void;
   placeholder?: string;
 }) {
-  const search = useServerFn(autocompletePlaces);
-  const details = useServerFn(getPlaceLocation);
-  const reverse = useServerFn(reverseGeocode);
+  const search = autocompletePlaces;
+  const details = getPlaceLocation;
+  const reverse = reverseGeocode;
 
   const [suggestions, setSuggestions] = React.useState<PlaceSuggestion[]>([]);
   const [openList, setOpenList] = React.useState(false);
@@ -56,7 +55,7 @@ export function LocationField({
     setLoading(true);
     const t = window.setTimeout(async () => {
       try {
-        const results = await search({ data: { input: q } });
+        const results = await search(q);
         if (active) {
           setSuggestions(results);
           setOpenList(true);
@@ -81,7 +80,7 @@ export function LocationField({
     setOpenList(false);
     setSuggestions([]);
     try {
-      const loc = await details({ data: { placeId: s.placeId } });
+      const loc = await details(s.placeId);
       if (loc.lat != null && loc.lng != null) setPin({ lat: loc.lat, lng: loc.lng });
     } catch {
       /* address text is enough */
@@ -92,7 +91,7 @@ export function LocationField({
     setPin(pos);
     setResolving(true);
     try {
-      const res = await reverse({ data: pos });
+      const res = await reverse(pos.lat, pos.lng);
       setPinAddress(res.address || `${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`);
     } catch {
       setPinAddress(`${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`);

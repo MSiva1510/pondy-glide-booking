@@ -30,20 +30,22 @@ API (the internal operations system — customers never see that dashboard).
 Home, Booking, Cars, Services, Pricing, About, Contact, Sign in, Privacy
 Policy, Terms, plus an authenticated Admin section.
 
-## Maps — 100% open source, no billing
+## Maps — Google Maps Platform (free tier)
 
-- Map picker: **Leaflet** + OpenStreetMap tiles
-- Address autocomplete: **Photon** (`photon.komoot.io`)
-- Reverse geocoding: **Nominatim** (`nominatim.openstreetmap.org`, throttled to
-  1 req/s per its usage policy)
+- Map picker: **Maps JavaScript API**
+- Address autocomplete + place details: **Places API (new)**
+- Reverse geocoding: **Geocoder** (JS API)
+- Contact-page embed: **Maps Embed API** (unlimited free)
 
-No API keys, no billing. Set `NOMINATIM_USER_AGENT` to identify your
-deployment (see below).
+Usage stays inside Google's free caps (10,000 calls/month per service). The
+browser key in `.env` is locked down with HTTP-referrer and API restrictions,
+so it only works from your domains.
 
 ## Tech stack
 
 TanStack Start · React 19 · Vite · Tailwind CSS v4 · Supabase · TypeScript.
-Package manager is **bun**. Deploys to Netlify (`NITRO_PRESET=netlify`).
+Package manager is **bun**. Deploys to **Vercel** only — see
+`DEPLOY-VERCEL.md`.
 
 ## Development
 
@@ -64,7 +66,7 @@ Copy `.env.example` to `.env`:
 | --- | --- |
 | `VITE_FLEET_API_URL` | Fleet Management API base URL. Leave empty to run on mock data. |
 | `VITE_FLEET_SUPABASE_URL` / `VITE_FLEET_SUPABASE_PROJECT_ID` / `VITE_FLEET_SUPABASE_ANON_KEY` | Owner's backend (fleet / booking web app). |
-| `NOMINATIM_USER_AGENT` | Contact string for Nominatim, e.g. `PondyGlide/1.0 (you@yourdomain.com)`. |
+| `VITE_GOOGLE_MAPS_BROWSER_KEY` | Google Maps browser key (Maps JS + Places + Geocoding enabled, referrer-restricted). Also set it in Vercel env vars for deploys. |
 | `CRON_SECRET` | Bearer secret for scheduled cron routes. |
 
 ## Scripts

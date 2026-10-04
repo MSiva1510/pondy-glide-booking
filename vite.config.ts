@@ -28,7 +28,7 @@ export default defineConfig(({ command, mode }) => {
   ];
 
   if (command === "build") {
-    plugins.push(nitro());
+    plugins.push(nitro({ preset: "vercel" }));
   }
 
   plugins.push(viteReact());

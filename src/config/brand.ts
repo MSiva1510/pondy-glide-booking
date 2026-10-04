@@ -27,9 +27,10 @@ const defaultBrand = {
   city: "Pondicherry",
   state: "Puducherry",
   address: "Pondicherry, Puducherry",
-  mapEmbedUrl:
-    "https://www.openstreetmap.org/export/embed.html?bbox=79.7982108%2C11.8866644%2C79.8122108%2C11.9006644&layer=mapnik&marker=11.8936644%2C79.8052108",
-  siteUrl: "https://pondy-glide-booking.netlify.app",
+  mapEmbedUrl: import.meta.env["VITE_GOOGLE_MAPS_BROWSER_KEY"]
+    ? `https://www.google.com/maps/embed/v1/place?key=${import.meta.env["VITE_GOOGLE_MAPS_BROWSER_KEY"]}&q=Sri+Jayam+Travels,+Pondicherry&center=11.8936644,79.8052108&zoom=16`
+    : "",
+  siteUrl: "",
   logoUrl: "",
   faviconUrl: "",
 };
