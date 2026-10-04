@@ -110,7 +110,7 @@ export function ServicesGrid() {
         title="Cab services built around your journey"
         description="Pick a service and we will take care of the vehicle, the driver and the route."
       />
-      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s) => (
           <ServiceCard key={s.slug} service={s} />
         ))}

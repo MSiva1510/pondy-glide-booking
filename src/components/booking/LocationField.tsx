@@ -93,7 +93,7 @@ export function LocationField({
     setResolving(true);
     try {
       const res = await reverse({ data: pos });
-      setPinAddress(res.address);
+      setPinAddress(res.address || `${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`);
     } catch {
       setPinAddress(`${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`);
     } finally {

@@ -207,7 +207,7 @@ function AdminPage() {
                 ["city", "City"],
                 ["state", "State"],
                 ["address", "Address"],
-                ["mapEmbedUrl", "Google Map embed link"],
+                ["mapEmbedUrl", "Map embed link"],
                 ["siteUrl", "Website address (https://…)"],
               ] as const
             ).map(([key, label]) => (

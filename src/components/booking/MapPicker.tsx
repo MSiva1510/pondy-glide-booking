@@ -1,32 +1,7 @@
 import * as React from "react";
 import { Loader2 } from "lucide-react";
-
-declare global {
-  interface Window {
-    google?: typeof google;
-    __initSriJayamMap?: () => void;
-  }
-}
-
-let mapsPromise: Promise<void> | null = null;
-
-function loadMaps() {
-  if (typeof window === "undefined") return Promise.reject(new Error("no window"));
-  if (window.google?.maps) return Promise.resolve();
-  if (mapsPromise) return mapsPromise;
-  const key = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
-  const channel = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"] ?? "";
-  if (!key) return Promise.reject(new Error("Maps key missing"));
-  mapsPromise = new Promise<void>((resolve, reject) => {
-    window.__initSriJayamMap = () => resolve();
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&callback=__initSriJayamMap&channel=${channel}`;
-    script.async = true;
-    script.onerror = () => reject(new Error("Failed to load Google Maps"));
-    document.head.appendChild(script);
-  });
-  return mapsPromise;
-}
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 export interface LatLng {
   lat: number;
@@ -34,6 +9,17 @@ export interface LatLng {
 }
 
 const PONDY: LatLng = { lat: 11.9416, lng: 79.8083 };
+
+const TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+const pinIcon = L.divIcon({
+  className: "",
+  html: '<div style="width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--color-accent,#0ea5a4);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)"></div>',
+  iconSize: [28, 28],
+  iconAnchor: [14, 28],
+});
 
 export function MapPicker({
   center,
@@ -45,60 +31,84 @@ export function MapPicker({
   const ref = React.useRef<HTMLDivElement>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [ready, setReady] = React.useState(false);
-  const mapRef = React.useRef<google.maps.Map | null>(null);
-  const markerRef = React.useRef<google.maps.Marker | null>(null);
+  const mapRef = React.useRef<L.Map | null>(null);
+  const markerRef = React.useRef<L.Marker | null>(null);
   const pickRef = React.useRef(onPick);
   pickRef.current = onPick;
 
   React.useEffect(() => {
     let cancelled = false;
-    loadMaps()
-      .then(() => {
-        if (cancelled || !ref.current || !window.google) return;
-        const start = center ?? PONDY;
-        const map = new window.google.maps.Map(ref.current, {
-          center: start,
-          zoom: 14,
-          disableDefaultUI: true,
-          zoomControl: true,
-          gestureHandling: "greedy",
-        });
-        const marker = new window.google.maps.Marker({
-          position: start,
-          map,
-          draggable: true,
-        });
-        marker.addListener("dragend", () => {
-          const p = marker.getPosition();
-          if (p) pickRef.current({ lat: p.lat(), lng: p.lng() });
-        });
-        map.addListener("click", (e: google.maps.MapMouseEvent) => {
-          if (!e.latLng) return;
-          marker.setPosition(e.latLng);
-          pickRef.current({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-        });
-        mapRef.current = map;
-        markerRef.current = marker;
-        setReady(true);
-      })
-      .catch(() => {
-        if (!cancelled) setError("Map could not be loaded. You can still type the address.");
+    const el = ref.current;
+    if (!el) return;
+    let lastW = 0;
+    let lastH = 0;
+
+    const create = () => {
+      if (cancelled || mapRef.current) return;
+      if (el.offsetWidth === 0 || el.offsetHeight === 0) return;
+      const start = center ?? PONDY;
+      const map = L.map(el, {
+        center: [start.lat, start.lng],
+        zoom: 14,
+        zoomControl: true,
+        attributionControl: true,
       });
+      L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
+      const marker = L.marker([start.lat, start.lng], {
+        icon: pinIcon,
+        draggable: true,
+      }).addTo(map);
+      marker.on("dragend", () => {
+        const p = marker.getLatLng();
+        pickRef.current({ lat: p.lat, lng: p.lng });
+      });
+      map.on("click", (e: L.LeafletMouseEvent) => {
+        marker.setLatLng(e.latlng);
+        pickRef.current({ lat: e.latlng.lat, lng: e.latlng.lng });
+      });
+      mapRef.current = map;
+      markerRef.current = marker;
+      map.invalidateSize();
+      setReady(true);
+    };
+
+    const observer = new ResizeObserver(() => {
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      if (w === 0 || h === 0) return;
+      const changed = w !== lastW || h !== lastH;
+      lastW = w;
+      lastH = h;
+      create();
+      if (changed && mapRef.current) mapRef.current.invalidateSize();
+    });
+    observer.observe(el);
+
+    try {
+      create();
+    } catch {
+      if (!cancelled) setError("Map could not be loaded. You can still type the address.");
+    }
+
     return () => {
       cancelled = true;
+      observer.disconnect();
+      mapRef.current?.remove();
+      mapRef.current = null;
+      markerRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
     if (!center || !mapRef.current || !markerRef.current) return;
-    mapRef.current.panTo(center);
-    markerRef.current.setPosition(center);
+    mapRef.current.panTo([center.lat, center.lng]);
+    markerRef.current.setLatLng([center.lat, center.lng]);
   }, [center]);
 
   return (
     <div className="relative h-[280px] w-full overflow-hidden rounded-2xl border border-border bg-secondary">
-      <div ref={ref} className="size-full" />
+      <div ref={ref} className="size-full z-0" />
       {!ready && !error ? (
         <div className="absolute inset-0 flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Loading map…

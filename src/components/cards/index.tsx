@@ -44,8 +44,8 @@ export function ServiceCard({ service }: { service: ServiceItem }) {
 
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   return (
-    <article className="group overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
-      <div className="aspect-[3/2] overflow-hidden bg-surface">
+    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
+      <div className="aspect-[3/2] shrink-0 overflow-hidden bg-surface">
         <img
           src={vehicle.image}
           alt={`${vehicle.name} — ${vehicle.category}`}
@@ -55,7 +55,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
-      <div className="p-5">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="text-lg font-semibold">{vehicle.name}</h3>
@@ -95,11 +95,13 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         <p className="mt-3 text-[11px] text-muted-foreground">
           Availability depends on date and booking request.
         </p>
-        <Button asChild className="mt-4 w-full rounded-xl">
-          <Link to="/booking" search={{ vehicle: vehicle.id }}>
-            Book Now
-          </Link>
-        </Button>
+        <div className="mt-auto pt-4">
+          <Button asChild className="w-full rounded-xl">
+            <Link to="/booking" search={{ vehicle: vehicle.id }}>
+              Book Now
+            </Link>
+          </Button>
+        </div>
       </div>
     </article>
   );

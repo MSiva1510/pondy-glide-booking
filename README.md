@@ -1563,17 +1563,8 @@ The website should immediately communicate:
 
 Create the website now.
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://pondy-glide-booking.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/121ee6c6-8660-480c-9ac9-df5453a1730b).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Maps and geocoding are fully open-source: Leaflet + OpenStreetMap tiles,
+Photon autocomplete, and Nominatim reverse geocoding. No API keys or billing.
 
 ## Development
 
