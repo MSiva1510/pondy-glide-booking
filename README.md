@@ -68,6 +68,7 @@ Copy `.env.example` to `.env`:
 | `VITE_FLEET_SUPABASE_URL` / `VITE_FLEET_SUPABASE_PROJECT_ID` / `VITE_FLEET_SUPABASE_ANON_KEY` | Owner's backend (fleet / booking web app). |
 | `VITE_GOOGLE_MAPS_BROWSER_KEY` | Google Maps browser key (Maps JS + Places + Geocoding enabled, referrer-restricted). Also set it in Vercel env vars for deploys. |
 | `CRON_SECRET` | Bearer secret for scheduled cron routes. |
+| `DASHBOARD_SUPABASE_URL` / `DASHBOARD_SUPABASE_ANON_KEY` | Fleet dashboard project — bookings go there via the `public_create_booking` RPC. Same values in Vercel env vars. If the RPC is unreachable, the request is queued in the visitor's browser (same-origin outbox) and retried automatically. |
 
 ## Scripts
 

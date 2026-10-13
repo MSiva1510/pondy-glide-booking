@@ -53,7 +53,33 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   }
 });
 
-/** Public: saves a website booking request into the owner's own database. */
+/** Server-side client for the dashboard (fleet operations) Supabase project. */
+function dashboardDb() {
+  const url = process.env["DASHBOARD_SUPABASE_URL"];
+  const key = process.env["DASHBOARD_SUPABASE_ANON_KEY"];
+  if (!url || !key) throw new Error("Dashboard backend is not configured.");
+  return createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+const TRIP_TYPE_TO_RPC: Record<BookingRequest["tripType"], string> = {
+  ONE_WAY: "one_way",
+  ROUND_TRIP: "round_trip",
+  LOCAL: "local_visit",
+  AIRPORT: "one_way",
+};
+
+function normalizeMobile(phone: string) {
+  return phone.replace(/\D/g, "").slice(-10);
+}
+
+/**
+ * Public: saves a website booking request.
+ * Primary path is the dashboard project's public_create_booking RPC.
+ * If that fails for any reason, it falls back to the original same-origin
+ * insert so the request is never lost.
+ */
 export const dispatchBooking = createServerFn({ method: "POST" })
   .inputValidator((input: { booking: BookingRequest & { id: string } }) => {
     const b = input?.booking;
@@ -62,29 +88,58 @@ export const dispatchBooking = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const b = data.booking;
-    const { error } = await ownDb().from("bookings").insert({
-      reference: b.id,
-      customer_name: b.customerName.slice(0, 120),
-      phone: b.phone.slice(0, 20),
-      email: b.email ?? null,
+    const today = new Date().toISOString().slice(0, 10);
+    const payload = {
+      name: b.customerName.slice(0, 120),
+      mobile: normalizeMobile(b.phone),
+      type: TRIP_TYPE_TO_RPC[b.tripType] ?? "one_way",
+      start_date: b.date || today,
+      start_time: (b.time || "").slice(0, 10),
       pickup: b.pickup,
-      drop_location: b.drop || null,
-      trip_date: b.date || null,
-      trip_time: b.time || null,
-      return_date: b.returnDate ?? null,
-      trip_type: b.tripType,
-      vehicle_type: b.vehicleType || null,
-      passengers: Number(b.passengers) || 1,
-      special_request: b.specialRequest ?? null,
-      service_slug: b.serviceSlug ?? null,
-      status: "PENDING",
-      source: "PUBLIC_WEBSITE",
+      drop: b.drop || "",
+      type_data: {
+        vehicleType: b.vehicleType || null,
+        passengers: Number(b.passengers) || 1,
+        serviceSlug: b.serviceSlug ?? null,
+        specialRequest: b.specialRequest ?? null,
+        email: b.email ?? null,
+        returnDate: b.returnDate ?? null,
+        tripType: b.tripType,
+        airport: b.tripType === "AIRPORT",
+        reference: b.id,
+        source: "PUBLIC_WEBSITE",
+      },
+    };
+    const { data: created, error } = await dashboardDb().rpc("public_create_booking", {
+      payload,
     });
     if (error) {
-      console.error("Booking save failed", error);
-      return { ok: false, saved: false };
+      // 22023 = the RPC rejected the data itself (bad mobile/date/time).
+      // Retrying would never succeed, so report it instead of queueing.
+      const code = (error as { code?: string }).code;
+      if (code === "22023") {
+        return {
+          ok: false,
+          saved: false,
+          via: "failed" as const,
+          bookingNumber: "",
+          retryable: false,
+          message: error.message,
+        };
+      }
+      throw error;
     }
-    return { ok: true, saved: true };
+    const bookingNumber = (created as { booking_number?: string } | null)?.booking_number ?? "";
+    // The dashboard RPC is the only writer: no same-origin table accepts
+    // anonymous booking inserts, so there is no server-side fallback.
+    // The caller (bookingService) queues to the browser outbox instead.
+    return {
+      ok: true,
+      saved: true,
+      via: "dashboard" as const,
+      bookingNumber,
+      retryable: false,
+    };
   });
 
 async function postToBookingApi(config: BookingApiSettings, payload: unknown) {

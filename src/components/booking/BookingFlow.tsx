@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -18,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { getAvailableVehicles } from "@/services/fleetService";
 import { submitBooking } from "@/services/bookingService";
+import { dispatchBooking } from "@/lib/settings.functions";
+import { flushOutbox, pendingOutboxCount } from "@/lib/booking-outbox";
 import { estimateFare } from "@/services/pricingService";
 import { todayISO, validateTrip, type FieldErrors } from "@/lib/booking-validation";
 import { LocationField } from "@/components/booking/LocationField";
@@ -49,6 +51,13 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [pendingSend, setPendingSend] = useState(false);
+
+  useEffect(() => {
+    if (pendingOutboxCount() === 0) return;
+    void flushOutbox((b) => dispatchBooking({ data: { booking: b } }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [form, setForm] = useState({
     tripType: (initial.tripType ?? "ONE_WAY") as TripType,
     pickup: initial.pickup ?? "",
@@ -125,7 +134,10 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
     });
     setSubmitting(false);
     if (result.ok && result.booking) {
-      setBooking(result.booking);
+      setBooking(
+        result.bookingNumber ? { ...result.booking, id: result.bookingNumber } : result.booking,
+      );
+      setPendingSend(Boolean(result.pending));
       setStep(5);
     } else {
       setSubmitError(result.error ?? "Something went wrong. Please try WhatsApp.");
@@ -428,6 +440,13 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
           <p className="mt-5 inline-block rounded-full bg-secondary px-4 py-2 text-sm font-semibold">
             Booking ID: {booking.id}
           </p>
+          {pendingSend ? (
+            <p className="mx-auto mt-3 max-w-md rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-900">
+              Our booking system is unreachable right now, so this request is saved on
+              this device and will be sent automatically. For instant confirmation,
+              please tap WhatsApp below.
+            </p>
+          ) : null}
           <dl className="mx-auto mt-6 max-w-md divide-y divide-border overflow-hidden rounded-2xl border border-border text-left">
             {[
               [
