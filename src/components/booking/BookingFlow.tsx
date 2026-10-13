@@ -128,6 +128,7 @@ export function BookingFlow({ initial = {} }: { initial?: BookingFlowInitial }) 
       time: form.time,
       tripType: form.tripType,
       vehicleType: form.vehicle,
+      vehicleName: selectedVehicle?.name ?? undefined,
       passengers: Number(form.passengers) || 1,
       specialRequest: form.specialRequest || undefined,
       serviceSlug: initial.service,

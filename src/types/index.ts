@@ -36,6 +36,7 @@ export interface BookingRequest {
   returnDate?: string | undefined;
   tripType: TripType;
   vehicleType: string;
+  vehicleName?: string | undefined;
   passengers: number;
   specialRequest?: string | undefined;
   serviceSlug?: string | undefined;

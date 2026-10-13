@@ -99,6 +99,7 @@ export const dispatchBooking = createServerFn({ method: "POST" })
       drop: b.drop || "",
       type_data: {
         vehicleType: b.vehicleType || null,
+        vehicleName: b.vehicleName ?? null,
         passengers: Number(b.passengers) || 1,
         serviceSlug: b.serviceSlug ?? null,
         specialRequest: b.specialRequest ?? null,
